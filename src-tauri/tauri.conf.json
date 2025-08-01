@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "SeekCode",
+  "version": "0.1.0",
+  "identifier": "com.seekrays.seekcode",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "SeekCode",
+        "width": 1200,
+        "height": 800,
+        "hiddenTitle": true,
+        "visible": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "sql": {
+      "preload": ["sqlite:seekcode.db"]
+    },
+    "updater": {
+      "endpoints": ["https://seekrays.com/seekcode/update/latest.json"],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIzQTZBQkEyNDg2NjlFRTUKUldUbG5tWklvcXVtczVhVXorbXAxd29BQjdWNDYvVHR3UDlZMFNiMUdQbmt1L1lYbmZiRURQeHAK",
+      "active": true
+    }
+  },
+  "bundle": {
+    "createUpdaterArtifacts": true,
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
