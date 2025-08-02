@@ -1,16 +1,7 @@
 # SeekCode
 
 [![Website](https://img.shields.io/badge/Website-seekrays.com-blue)](https://seekrays.com/seekcode/)
-
-## Download
-
-### macOS
-- [Apple Silicon (M1/M2/M3)](https://seekrays.com/seekcode/download?t=macos_aarch64)
-- [Intel Mac](https://seekrays.com/seekcode/download?t=macos_x64)
-
-### Windows
-- [Setup Installer (x64)](https://seekrays.com/seekcode/download?t=windows_setup)
-- [MSI Package (x64)](https://seekrays.com/seekcode/download?t=windows_msi)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/seekrays/seekcode?sort=semver)
 
 ## Introduction
 
@@ -38,3 +29,25 @@ SeekCode is a modern desktop app for code management. It combines efficient code
 
 ### Theme Settings
 ![Appearance Settings](https://public-1251960616.cos.ap-nanjing.myqcloud.com/images/setting-appearance.png)
+
+
+## Download
+
+### macOS
+- [Apple Silicon (M1/M2/M3)](https://seekrays.com/seekcode/download?t=macos_aarch64)
+- [Intel Mac](https://seekrays.com/seekcode/download?t=macos_x64)
+
+### Windows
+- [Setup Installer (x64)](https://seekrays.com/seekcode/download?t=windows_setup)
+- [MSI Package (x64)](https://seekrays.com/seekcode/download?t=windows_msi)
+
+# Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+
+# Contact Us
+- Email: seekrays.bot@gmail.com
+- Discord: [seecode](https://seekrays.com/seekcode/redirect?t=discord)
+- wechat: 
+![](https://seekrays.com/chat/images/qrcode_seekrays.jpg)
