@@ -49,5 +49,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 # Contact Us
 - Email: seekrays.bot@gmail.com
 - Discord: [seecode](https://seekrays.com/seekcode/redirect?t=discord)
-- wechat: 
-![](https://seekrays.com/chat/images/qrcode_seekrays.jpg)
+- 微信交流群(添加小助理，拉你进群)：![微信图片_2025-08-03_123606_404](https://github.com/user-attachments/assets/bb8ac90c-89eb-4b86-8d46-ab068facaa4b)
