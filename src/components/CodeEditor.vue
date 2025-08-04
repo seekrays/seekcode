@@ -37,6 +37,7 @@ import { sql } from "@codemirror/lang-sql";
 import { markdown } from "@codemirror/lang-markdown";
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
+import { cpp } from "@codemirror/lang-cpp";
 
 // Legacy modes for additional languages
 import { StreamLanguage } from "@codemirror/language";
@@ -97,6 +98,8 @@ const languageMap: Record<string, any> = {
   go: go(),
   rust: rust(),
   php: php(),
+  cpp: cpp(),
+  c: cpp(), // C 语言使用 C++ 的语法高亮
   csharp: StreamLanguage.define(csharp),
 
   // 数据库

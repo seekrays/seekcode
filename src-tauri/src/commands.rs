@@ -237,7 +237,8 @@ func main() {
 /// 获取当前时间戳（本地时间格式）
 #[tauri::command]
 pub fn get_current_timestamp() -> String {
-    chrono::Local::now().format("%Y-%m-%d %H:%M:%S").to_string()
+    // 使用 ISO 8601 格式，确保在所有系统上都能正确解析
+    chrono::Local::now().format("%Y-%m-%dT%H:%M:%S").to_string()
 }
 
 /// 获取支持的编程语言列表

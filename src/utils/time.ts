@@ -2,7 +2,34 @@ import { useI18n } from "vue-i18n";
 
 export function formatTime(dateInput: Date | string): string {
   const { t, locale } = useI18n();
-  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+
+  let date: Date;
+
+  if (typeof dateInput === "string") {
+    // 尝试解析时间字符串
+    let parsedDate: Date | null = null;
+
+    // 尝试直接解析
+    try {
+      parsedDate = new Date(dateInput);
+      if (!isNaN(parsedDate.getTime())) {
+        date = parsedDate;
+      } else {
+        // 尝试将空格替换为 T 来解析
+        const isoStr = dateInput.replace(" ", "T");
+        parsedDate = new Date(isoStr);
+        if (!isNaN(parsedDate.getTime())) {
+          date = parsedDate;
+        } else {
+          return t("time.invalid_date");
+        }
+      }
+    } catch {
+      return t("time.invalid_date");
+    }
+  } else {
+    date = dateInput;
+  }
 
   // 检查日期是否有效
   if (isNaN(date.getTime())) {

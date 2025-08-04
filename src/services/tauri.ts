@@ -34,7 +34,7 @@ export async function getCurrentTimestamp(): Promise<string> {
     return await invoke("get_current_timestamp");
   } catch (error) {
     console.error("Failed to get current timestamp:", error);
-    // 回退到前端本地时间
+    // 回退到前端本地时间，使用 ISO 8601 格式
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -42,7 +42,7 @@ export async function getCurrentTimestamp(): Promise<string> {
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
     const seconds = String(now.getSeconds()).padStart(2, "0");
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 }
 

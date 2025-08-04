@@ -9,6 +9,8 @@ export const languageIcons: Record<string, string> = {
   html: "🌐",
   go: "🐹",
   java: "☕",
+  cpp: "⚡",
+  c: "🔵",
   php: "🐘",
   sql: "🗄️",
   shell: "🐚",
@@ -20,22 +22,24 @@ export const languageIcons: Record<string, string> = {
 };
 
 export const languages = [
-  "javascript",
-  "typescript",
-  "vue",
-  "rust",
-  "python",
+  "c",
+  "cpp",
   "css",
-  "html",
   "go",
+  "html",
   "java",
-  "php",
-  "sql",
-  "shell",
+  "javascript",
   "json",
   "markdown",
-  "yaml",
+  "php",
+  "python",
+  "rust",
+  "shell",
+  "sql",
+  "typescript",
+  "vue",
   "xml",
+  "yaml",
   "text",
 ];
 
@@ -163,6 +167,48 @@ export function detectLanguage(content: string): string {
     content.includes("@Override")
   ) {
     return "java";
+  }
+
+  // 检测 C++
+  if (
+    content.includes("#include") ||
+    content.includes("std::") ||
+    content.includes("namespace ") ||
+    content.includes("class ") ||
+    content.includes("template<") ||
+    content.includes("cout <<") ||
+    content.includes("cin >>") ||
+    content.includes("vector<") ||
+    content.includes("string ") ||
+    content.includes("int main(") ||
+    content.includes("void ") ||
+    content.includes("const ") ||
+    content.includes("&") ||
+    content.includes("->")
+  ) {
+    return "cpp";
+  }
+
+  // 检测 C
+  if (
+    content.includes("#include") ||
+    content.includes("stdio.h") ||
+    content.includes("stdlib.h") ||
+    content.includes("printf(") ||
+    content.includes("scanf(") ||
+    content.includes("malloc(") ||
+    content.includes("free(") ||
+    content.includes("struct ") ||
+    content.includes("typedef ") ||
+    content.includes("int main(") ||
+    content.includes("void ") ||
+    content.includes("char ") ||
+    content.includes("int ") ||
+    content.includes("float ") ||
+    content.includes("double ") ||
+    content.includes("return 0;")
+  ) {
+    return "c";
   }
 
   // 检测 PHP
