@@ -1,5 +1,7 @@
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
+use crate::mcp_server::{start_mcp_server, stop_mcp_server, is_mcp_server_running};
+use crate::models::McpServerConfig;
 
 // ============================================================================
 // 数据库迁移定义
@@ -329,4 +331,46 @@ pub fn is_window_visible(app: tauri::AppHandle) -> Result<bool, String> {
     } else {
         Ok(false)
     }
+}
+
+// ============================================================================
+// MCP 服务器控制
+// ============================================================================
+
+/// 启动MCP服务器
+#[tauri::command]
+pub async fn start_mcp_server_command(
+    app: tauri::AppHandle,
+    host: Option<String>,
+    port: Option<u16>,
+) -> Result<String, String> {
+    let config = McpServerConfig {
+        enabled: true,
+        host: host.unwrap_or_else(|| "127.0.0.1".to_string()),
+        port: port.unwrap_or(3000),
+        allow_query: true,
+        allow_create: true,
+        allow_update: true,
+        allow_delete: true,
+    };
+
+    match start_mcp_server(app, config).await {
+        Ok(_) => Ok("MCP服务器启动成功".to_string()),
+        Err(e) => Err(format!("启动MCP服务器失败: {}", e)),
+    }
+}
+
+/// 停止MCP服务器
+#[tauri::command]
+pub async fn stop_mcp_server_command() -> Result<String, String> {
+    match stop_mcp_server().await {
+        Ok(_) => Ok("MCP服务器停止成功".to_string()),
+        Err(e) => Err(format!("停止MCP服务器失败: {}", e)),
+    }
+}
+
+/// 查询MCP服务器状态
+#[tauri::command]
+pub fn get_mcp_server_status() -> Result<bool, String> {
+    Ok(is_mcp_server_running())
 }
