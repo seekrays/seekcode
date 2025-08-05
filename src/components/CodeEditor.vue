@@ -19,7 +19,11 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import { lineNumbers, keymap } from "@codemirror/view";
 import { autocompletion, closeBrackets } from "@codemirror/autocomplete";
 import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
-import { defaultKeymap, historyKeymap } from "@codemirror/commands";
+import {
+  defaultKeymap,
+  historyKeymap,
+  indentWithTab,
+} from "@codemirror/commands";
 import { bracketMatching } from "@codemirror/language";
 
 // 语言支持
@@ -138,7 +142,12 @@ const createEditor = () => {
     themeCompartment.of(props.theme === "dark" ? oneDark : []),
 
     // 键盘快捷键
-    keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
+    keymap.of([
+      ...defaultKeymap,
+      ...historyKeymap,
+      ...searchKeymap,
+      indentWithTab,
+    ]),
 
     // 编辑器功能
     EditorView.lineWrapping, // 自动换行
