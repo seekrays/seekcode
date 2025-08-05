@@ -125,6 +125,7 @@ export default {
     general: "General",
     appearance: "Appearance",
     language: "Language",
+    mcp: "MCP Management",
     about: "About",
 
     // General settings

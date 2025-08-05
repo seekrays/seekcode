@@ -10,6 +10,7 @@ dependencies = [
  "axum",
  "chrono",
  "futures",
+ "lazy_static",
  "rmcp",
  "serde",
  "serde_json",
@@ -24,7 +25,9 @@ dependencies = [
  "tauri-plugin-updater",
  "tokio",
  "tokio-stream",
+ "tokio-util",
  "tower-http",
+ "tracing",
  "uuid",
 ]
 
@@ -5243,8 +5246,12 @@ checksum = "66a539a9ad6d5d281510d5bd368c973d636c02dbf8a67300bfb6b950696ad7df"
 dependencies = [
  "bytes",
  "futures-core",
+ "futures-io",
  "futures-sink",
+ "futures-util",
+ "hashbrown 0.15.4",
  "pin-project-lite",
+ "slab",
  "tokio",
 ]
 

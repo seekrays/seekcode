@@ -123,6 +123,7 @@ export default {
     general: "通用",
     appearance: "外观",
     language: "语言",
+    mcp: "MCP管理",
     about: "关于",
 
     // 通用设置

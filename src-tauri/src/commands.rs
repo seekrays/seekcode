@@ -1,7 +1,8 @@
+use crate::mcp_server::{
+    get_server_address, is_server_running, start_server, start_server_with_permissions, stop_server,
+};
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
-use crate::mcp_server::{start_mcp_server, stop_mcp_server, is_mcp_server_running};
-use crate::models::McpServerConfig;
 
 // ============================================================================
 // 数据库迁移定义
@@ -342,21 +343,42 @@ pub fn is_window_visible(app: tauri::AppHandle) -> Result<bool, String> {
 #[tauri::command]
 pub async fn start_mcp_server_command(
     app: tauri::AppHandle,
-    host: Option<String>,
+    _host: Option<String>,
     port: Option<u16>,
+    allow_query: Option<bool>,
+    allow_create: Option<bool>,
+    allow_update: Option<bool>,
+    allow_delete: Option<bool>,
 ) -> Result<String, String> {
-    let config = McpServerConfig {
-        enabled: true,
-        host: host.unwrap_or_else(|| "127.0.0.1".to_string()),
-        port: port.unwrap_or(3000),
-        allow_query: true,
-        allow_create: true,
-        allow_update: true,
-        allow_delete: true,
-    };
+    let port = port.unwrap_or(9800);
+    let allow_query = allow_query.unwrap_or(true);
+    let allow_create = allow_create.unwrap_or(true);
+    let allow_update = allow_update.unwrap_or(false);
+    let allow_delete = allow_delete.unwrap_or(false);
 
-    match start_mcp_server(app, config).await {
-        Ok(_) => Ok("MCP服务器启动成功".to_string()),
+    // 创建数据库连接池
+    let app_data_dir = app
+        .path()
+        .app_data_dir()
+        .unwrap_or_else(|_| std::path::PathBuf::from("."));
+    let db_path = app_data_dir.join("seekcode.db");
+    let db_url = format!("sqlite:{}", db_path.to_string_lossy());
+
+    let db_pool = sqlx::SqlitePool::connect(&db_url)
+        .await
+        .map_err(|e| format!("数据库连接失败: {}", e))?;
+
+    match start_server_with_permissions(
+        db_pool,
+        port,
+        allow_query,
+        allow_create,
+        allow_update,
+        allow_delete,
+    )
+    .await
+    {
+        Ok(addr) => Ok(format!("MCP服务器启动成功，地址: {}", addr)),
         Err(e) => Err(format!("启动MCP服务器失败: {}", e)),
     }
 }
@@ -364,7 +386,7 @@ pub async fn start_mcp_server_command(
 /// 停止MCP服务器
 #[tauri::command]
 pub async fn stop_mcp_server_command() -> Result<String, String> {
-    match stop_mcp_server().await {
+    match stop_server().await {
         Ok(_) => Ok("MCP服务器停止成功".to_string()),
         Err(e) => Err(format!("停止MCP服务器失败: {}", e)),
     }
@@ -372,6 +394,12 @@ pub async fn stop_mcp_server_command() -> Result<String, String> {
 
 /// 查询MCP服务器状态
 #[tauri::command]
-pub fn get_mcp_server_status() -> Result<bool, String> {
-    Ok(is_mcp_server_running())
+pub async fn get_mcp_server_status() -> Result<serde_json::Value, String> {
+    let is_running = is_server_running().await;
+    let address = get_server_address().await;
+
+    Ok(serde_json::json!({
+        "running": is_running,
+        "address": address.map(|addr| addr.to_string())
+    }))
 }

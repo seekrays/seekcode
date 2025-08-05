@@ -2,9 +2,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod commands;
-mod models;
 mod mcp_server;
-mod snippet_service;
+mod models;
 
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconEvent};
 use tauri::{

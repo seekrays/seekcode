@@ -61,8 +61,8 @@
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
                 ]"
               >
-                <i class="fas fa-plug text-lg"></i>
-                <span class="font-medium">插件管理</span>
+                <i class="fas fa-server text-lg"></i>
+                <span class="font-medium">{{ $t("settings.mcp") }}</span>
               </button>
             </li>
 
@@ -97,7 +97,7 @@
                 : settingsState.activeTab === "appearance"
                 ? $t("settings.appearance")
                 : settingsState.activeTab === "plugins"
-                ? "插件管理"
+                ? $t("settings.mcp")
                 : $t("settings.about")
             }}
           </h3>
