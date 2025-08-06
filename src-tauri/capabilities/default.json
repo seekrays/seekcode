@@ -21,6 +21,7 @@
     "process:default",
     "process:allow-restart",
     "process:default",
+    "dialog:default",
     "aptabase:allow-track-event"
   ]
 }

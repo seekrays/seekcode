@@ -231,6 +231,22 @@ export default {
     // Help links
     mcpHelp: "MCP Usage Help",
 
+    // Data Management
+    data: "Data Management",
+    exportData: "Data Export",
+    exportDataDesc: "Export your code snippets data for backup and migration",
+    exportSnippets: "Export Code Snippets",
+    exporting: "Exporting...",
+    importData: "Data Import",
+    importDataDesc:
+      "Import code snippets data from JSON files, support migration from other devices",
+    importing: "Importing...",
+    clearExistingData: "Clear Existing Data",
+    clearExistingDataDesc:
+      "Clear all existing code snippets before import (use with caution)",
+    dataStatistics: "Data Statistics",
+    snippetsCount: "Code Snippets Count",
+
     // Update
     checkUpdate: "Check for Updates",
     installUpdate: "Install Update",

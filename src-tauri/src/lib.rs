@@ -25,6 +25,7 @@ pub async fn run() {
     let migrations = commands::get_migrations();
 
     let app = tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_clipboard_manager::init())
@@ -121,6 +122,7 @@ pub async fn run() {
             commands::start_mcp_server,
             commands::stop_mcp_server,
             commands::get_mcp_server_status,
+            commands::write_text_file,
             commands::track_event,
         ])
         .build(tauri::generate_context!())

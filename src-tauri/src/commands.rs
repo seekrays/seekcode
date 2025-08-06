@@ -1,6 +1,8 @@
 use crate::mcp_server::{
     get_server_address, is_server_running, start_server_with_permissions, stop_server,
 };
+use std::fs;
+use std::path::Path;
 use tauri::Manager;
 use tauri_plugin_aptabase::EventTracker;
 use tauri_plugin_sql::{Migration, MigrationKind};
@@ -379,6 +381,20 @@ pub async fn get_mcp_server_status() -> Result<serde_json::Value, String> {
         "running": is_running,
         "address": address.map(|addr| addr.to_string())
     }))
+}
+
+/// 写入文本文件
+#[tauri::command]
+pub fn write_text_file(path: String, contents: String) -> Result<(), String> {
+    // 确保父目录存在
+    if let Some(parent) = Path::new(&path).parent() {
+        fs::create_dir_all(parent).map_err(|e| format!("Failed to create directory: {}", e))?;
+    }
+
+    // 写入文件
+    fs::write(&path, contents).map_err(|e| format!("Failed to write file: {}", e))?;
+
+    Ok(())
 }
 
 // ============================================================================

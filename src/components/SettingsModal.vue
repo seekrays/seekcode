@@ -5,11 +5,11 @@
     @click.self="closeSettings"
   >
     <div
-      class="w-full max-w-5xl h-[85vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex"
+      class="w-full max-w-6xl h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex"
     >
       <!-- 左侧导航 -->
       <div
-        class="w-56 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col"
+        class="w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col"
       >
         <div class="p-8 border-b border-gray-200 dark:border-gray-700">
           <h2
@@ -33,7 +33,9 @@
                 ]"
               >
                 <i class="fas fa-cogs text-lg"></i>
-                <span class="font-medium">{{ $t("settings.general") }}</span>
+                <span class="font-medium whitespace-nowrap">{{
+                  $t("settings.general")
+                }}</span>
               </button>
             </li>
             <li>
@@ -47,7 +49,9 @@
                 ]"
               >
                 <i class="fas fa-palette text-lg"></i>
-                <span class="font-medium">{{ $t("settings.appearance") }}</span>
+                <span class="font-medium whitespace-nowrap">{{
+                  $t("settings.appearance")
+                }}</span>
               </button>
             </li>
 
@@ -62,7 +66,26 @@
                 ]"
               >
                 <i class="fas fa-plug text-lg"></i>
-                <span class="font-medium">{{ $t("settings.mcp") }}</span>
+                <span class="font-medium whitespace-nowrap">{{
+                  $t("settings.mcp")
+                }}</span>
+              </button>
+            </li>
+
+            <li>
+              <button
+                @click="setActiveTab('data')"
+                :class="[
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
+                  settingsState.activeTab === 'data'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]"
+              >
+                <i class="fas fa-database text-lg"></i>
+                <span class="font-medium whitespace-nowrap">{{
+                  $t("settings.data")
+                }}</span>
               </button>
             </li>
 
@@ -77,7 +100,9 @@
                 ]"
               >
                 <i class="fas fa-info-circle text-lg"></i>
-                <span class="font-medium">{{ $t("settings.about") }}</span>
+                <span class="font-medium whitespace-nowrap">{{
+                  $t("settings.about")
+                }}</span>
               </button>
             </li>
           </ul>
@@ -98,6 +123,8 @@
                 ? $t("settings.appearance")
                 : settingsState.activeTab === "mcpServer"
                 ? $t("settings.mcp")
+                : settingsState.activeTab === "data"
+                ? $t("settings.data")
                 : $t("settings.about")
             }}
           </h3>
@@ -120,6 +147,9 @@
           <!-- MCP 服务器管理 -->
           <McpServer v-else-if="settingsState.activeTab === 'mcpServer'" />
 
+          <!-- 数据管理 -->
+          <DataManagement v-else-if="settingsState.activeTab === 'data'" />
+
           <!-- 关于页面 -->
           <AboutPage v-else-if="settingsState.activeTab === 'about'" />
         </div>
@@ -134,6 +164,7 @@ import GeneralSettings from "./GeneralSettings.vue";
 import ThemeSettings from "./ThemeSettings.vue";
 import AboutPage from "./AboutPage.vue";
 import McpServer from "./McpServer.vue";
+import DataManagement from "./DataManagement.vue";
 
 const { settingsState, closeSettings, setActiveTab } = useUserSettings();
 </script>

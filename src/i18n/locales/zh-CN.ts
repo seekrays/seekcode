@@ -229,6 +229,20 @@ export default {
 
     // 帮助链接
     mcpHelp: "MCP 使用帮助",
+
+    // 数据管理
+    data: "数据管理",
+    exportData: "数据导出",
+    exportDataDesc: "导出您的代码片段数据，支持备份和迁移",
+    exportSnippets: "导出代码片段",
+    exporting: "导出中...",
+    importData: "数据导入",
+    importDataDesc: "从JSON文件导入代码片段数据，支持从其他设备迁移",
+    importing: "导入中...",
+    clearExistingData: "清空已有数据",
+    clearExistingDataDesc: "导入前清空所有现有代码片段（谨慎操作）",
+    dataStatistics: "数据统计",
+    snippetsCount: "代码片段数量",
   },
 
   // 更新相关
