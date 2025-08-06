@@ -8,7 +8,7 @@
         <h3
           class="text-lg font-medium text-gray-900 dark:text-white flex items-center gap-2"
         >
-          <i class="fas fa-server text-blue-500"></i>
+          <i class="fas fa-plug text-blue-500"></i>
           MCP 管理
         </h3>
         <div class="flex items-center gap-2">
@@ -55,34 +55,34 @@
           />
         </div>
 
-        <!-- 监听地址 -->
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
-            监听地址
-          </label>
-          <input
-            v-model="mcpConfig.host"
-            type="text"
-            placeholder="127.0.0.1"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          />
-        </div>
-
-        <!-- 监听端口 -->
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
-            监听端口
-          </label>
-          <input
-            v-model.number="mcpConfig.port"
-            type="number"
-            placeholder="8080"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          />
+        <!-- 监听地址和端口 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              监听地址
+            </label>
+            <input
+              v-model="mcpConfig.host"
+              type="text"
+              placeholder="127.0.0.1"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              监听端口
+            </label>
+            <input
+              v-model.number="mcpConfig.port"
+              type="number"
+              placeholder="8080"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
         </div>
 
         <!-- 权限控制 -->
@@ -140,16 +140,29 @@
       </div>
     </div>
 
-    <!-- 状态信息 -->
-    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-      <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-        服务状态
-      </h4>
-      <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-        <p>自动启动: {{ mcpConfig.autoStart ? "已启用" : "已禁用" }}</p>
+    <!-- MCP JSON 配置 -->
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
+          MCP JSON 配置
+        </h4>
+        <button
+          @click="copyMcpJson"
+          class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+        >
+          复制配置
+        </button>
+      </div>
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+        <pre class="text-xs text-gray-700 dark:text-gray-300 overflow-x-auto">{{
+          getMcpJson()
+        }}</pre>
+      </div>
+      <div class="mt-3 text-xs text-gray-500 dark:text-gray-400">
         <p>运行状态: {{ isServerRunning ? "运行中" : "已停止" }}</p>
-        <p>地址: {{ mcpConfig.host }}:{{ mcpConfig.port }}</p>
-        <p>权限: {{ getPermissionText() }}</p>
+        <p>
+          地址: {{ serverAddress || `${mcpConfig.host}:${mcpConfig.port}/sse` }}
+        </p>
       </div>
     </div>
   </div>
@@ -187,6 +200,7 @@ const isSaving = ref(false);
 const isStarting = ref(false);
 const isStopping = ref(false);
 const isServerRunning = ref(false);
+const serverAddress = ref<string>("");
 
 // 加载配置
 const loadConfig = async () => {
@@ -223,9 +237,15 @@ const checkServerStatus = async () => {
       address?: string;
     };
     isServerRunning.value = status.running;
+    if (status.address) {
+      serverAddress.value = "http://" + status.address + "/sse";
+    } else {
+      serverAddress.value = `http://${mcpConfig.value.host}:${mcpConfig.value.port}/sse`;
+    }
   } catch (error) {
     console.error("Failed to check server status:", error);
     isServerRunning.value = false;
+    serverAddress.value = `http://${mcpConfig.value.host}:${mcpConfig.value.port}/sse`;
   }
 };
 
@@ -272,6 +292,32 @@ const getPermissionText = () => {
   if (mcpConfig.value.allow_update) permissions.push("更新");
   if (mcpConfig.value.allow_delete) permissions.push("删除");
   return permissions.length > 0 ? permissions.join(", ") : "无权限";
+};
+
+// 获取 MCP JSON 配置
+const getMcpJson = () => {
+  const mcpJsonConfig = {
+    mcpServers: {
+      "seekcode-mcp-server": {
+        url:
+          serverAddress.value ||
+          `http://${mcpConfig.value.host}:${mcpConfig.value.port}/sse`,
+        type: "http",
+      },
+    },
+    inputs: [],
+  };
+  return JSON.stringify(mcpJsonConfig, null, 2);
+};
+
+// 复制 MCP JSON 配置
+const copyMcpJson = async () => {
+  try {
+    await navigator.clipboard.writeText(getMcpJson());
+    console.log("MCP JSON config copied to clipboard");
+  } catch (error) {
+    console.error("Failed to copy MCP JSON config:", error);
+  }
 };
 
 // 监听配置变化，自动保存

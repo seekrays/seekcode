@@ -97,7 +97,6 @@ pub fn run() {
         )
         .invoke_handler(tauri::generate_handler![
             commands::get_current_timestamp,
-            commands::get_supported_languages,
             commands::get_clipboard_content,
             commands::set_clipboard_content,
             commands::show_window,

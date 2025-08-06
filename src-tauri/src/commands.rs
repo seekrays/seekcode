@@ -244,30 +244,6 @@ pub fn get_current_timestamp() -> String {
     chrono::Local::now().format("%Y-%m-%dT%H:%M:%S").to_string()
 }
 
-/// 获取支持的编程语言列表
-#[tauri::command]
-pub fn get_supported_languages() -> Vec<String> {
-    vec![
-        "javascript".to_string(),
-        "typescript".to_string(),
-        "vue".to_string(),
-        "rust".to_string(),
-        "python".to_string(),
-        "css".to_string(),
-        "html".to_string(),
-        "go".to_string(),
-        "java".to_string(),
-        "php".to_string(),
-        "sql".to_string(),
-        "shell".to_string(),
-        "json".to_string(),
-        "markdown".to_string(),
-        "yaml".to_string(),
-        "xml".to_string(),
-        "text".to_string(),
-    ]
-}
-
 // ============================================================================
 // 剪贴板相关
 // ============================================================================
