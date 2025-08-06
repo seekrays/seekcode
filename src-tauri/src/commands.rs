@@ -341,7 +341,7 @@ pub fn is_window_visible(app: tauri::AppHandle) -> Result<bool, String> {
 
 /// 启动MCP服务器
 #[tauri::command]
-pub async fn start_mcp_server_command(
+pub async fn start_mcp_server(
     app: tauri::AppHandle,
     _host: Option<String>,
     port: Option<u16>,
@@ -385,7 +385,7 @@ pub async fn start_mcp_server_command(
 
 /// 停止MCP服务器
 #[tauri::command]
-pub async fn stop_mcp_server_command() -> Result<String, String> {
+pub async fn stop_mcp_server() -> Result<String, String> {
     match stop_server().await {
         Ok(_) => Ok("MCP服务器停止成功".to_string()),
         Err(e) => Err(format!("停止MCP服务器失败: {}", e)),

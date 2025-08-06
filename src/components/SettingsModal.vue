@@ -53,10 +53,10 @@
 
             <li>
               <button
-                @click="setActiveTab('plugins')"
+                @click="setActiveTab('mcpServer')"
                 :class="[
                   'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-3',
-                  settingsState.activeTab === 'plugins'
+                  settingsState.activeTab === 'mcpServer'
                     ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
                 ]"
@@ -96,7 +96,7 @@
                 ? $t("settings.general")
                 : settingsState.activeTab === "appearance"
                 ? $t("settings.appearance")
-                : settingsState.activeTab === "plugins"
+                : settingsState.activeTab === "mcpServer"
                 ? $t("settings.mcp")
                 : $t("settings.about")
             }}
@@ -117,8 +117,8 @@
           <!-- 外观设置 -->
           <ThemeSettings v-else-if="settingsState.activeTab === 'appearance'" />
 
-          <!-- 插件管理 -->
-          <PluginSettings v-else-if="settingsState.activeTab === 'plugins'" />
+          <!-- MCP 服务器管理 -->
+          <McpServer v-else-if="settingsState.activeTab === 'mcpServer'" />
 
           <!-- 关于页面 -->
           <AboutPage v-else-if="settingsState.activeTab === 'about'" />
@@ -133,7 +133,7 @@ import { useUserSettings } from "../composables/useUserSettings";
 import GeneralSettings from "./GeneralSettings.vue";
 import ThemeSettings from "./ThemeSettings.vue";
 import AboutPage from "./AboutPage.vue";
-import PluginSettings from "./PluginSettings.vue";
+import McpServer from "./McpServer.vue";
 
 const { settingsState, closeSettings, setActiveTab } = useUserSettings();
 </script>

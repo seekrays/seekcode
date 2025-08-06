@@ -417,7 +417,7 @@ const checkAndStartMcpServer = async () => {
 
       // 如果启用了自动启动，则启动MCP服务器
       if (config.autoStart) {
-        const result = await invoke("start_mcp_server_command", {
+        const result = await invoke("start_mcp_server", {
           host: config.host || "127.0.0.1",
           port: config.port || 9800,
           allow_query:

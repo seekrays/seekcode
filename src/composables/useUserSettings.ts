@@ -21,7 +21,7 @@ export interface GeneralSettings {
 
 export interface SettingsState {
   isOpen: boolean;
-  activeTab: "general" | "appearance" | "plugins" | "about";
+  activeTab: "general" | "appearance" | "mcpServer" | "about";
 }
 
 export function useUserSettings() {

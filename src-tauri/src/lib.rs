@@ -103,8 +103,8 @@ pub fn run() {
             commands::show_window,
             commands::hide_window,
             commands::is_window_visible,
-            commands::start_mcp_server_command,
-            commands::stop_mcp_server_command,
+            commands::start_mcp_server,
+            commands::stop_mcp_server,
             commands::get_mcp_server_status,
         ])
         .build(tauri::generate_context!())
