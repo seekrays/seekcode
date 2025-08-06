@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Result};
+use chrono::Local;
 use futures::Future;
 use rmcp::{
     handler::server::{router::tool::ToolRouter, tool::Parameters},
@@ -89,15 +90,19 @@ impl SnippetService {
             .map(|tags| serde_json::to_string(tags).unwrap_or_default())
             .unwrap_or_default();
 
+        let now = Local::now().format("%Y-%m-%dT%H:%M:%S").to_string();
+        
         let result: std::result::Result<sqlx::sqlite::SqliteQueryResult, sqlx::Error> =
             sqlx::query(
                 "INSERT INTO code_snippets (title, code, language, tags, created_at, updated_at) 
-             VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))",
+             VALUES (?, ?, ?, ?, ?, ?)",
             )
             .bind(&request.title)
             .bind(&request.code)
             .bind(&request.language)
             .bind(&tags_json)
+            .bind(&now)
+            .bind(&now)
             .execute(&self.db_pool)
             .await;
 
@@ -185,7 +190,6 @@ impl SnippetService {
         if !request.query.is_empty() {
             query_str.push_str(" AND (title LIKE ? OR code LIKE ?)");
             let search_pattern = format!("%{}%", request.query);
-            params.push(search_pattern.clone());
             params.push(search_pattern.clone());
             params.push(search_pattern);
         }
@@ -276,11 +280,13 @@ impl SnippetService {
             return Err(McpError::invalid_params("No fields to update", None));
         }
 
-        updates.push("updated_at = datetime('now')");
+        let now = Local::now().format("%Y-%m-%dT%H:%M:%S").to_string();
+        updates.push("updated_at = ?");
         let query_str = format!(
             "UPDATE code_snippets SET {} WHERE id = ?",
             updates.join(", ")
         );
+        params.push(now);
         params.push(request.id.to_string());
 
         let mut query = sqlx::query(&query_str);
