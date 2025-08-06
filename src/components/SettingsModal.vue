@@ -5,7 +5,7 @@
     @click.self="closeSettings"
   >
     <div
-      class="w-full max-w-3xl h-[70vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex"
+      class="w-full max-w-5xl h-[85vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex"
     >
       <!-- 左侧导航 -->
       <div
@@ -88,7 +88,7 @@
       <div class="flex-1 flex flex-col">
         <!-- 标题栏 -->
         <div
-          class="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"
+          class="p-8 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"
         >
           <h3 class="text-lg font-medium text-gray-900 dark:text-white">
             {{
@@ -110,7 +110,7 @@
         </div>
 
         <!-- 内容区域 -->
-        <div class="flex-1 p-6 overflow-y-auto scroll-smooth">
+        <div class="flex-1 p-8 overflow-y-auto scroll-smooth">
           <!-- 通用设置 -->
           <GeneralSettings v-if="settingsState.activeTab === 'general'" />
 

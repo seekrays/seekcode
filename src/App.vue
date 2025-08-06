@@ -409,12 +409,6 @@ const checkAndStartMcpServer = async () => {
     const configStr = await getSetting("mcp_server");
     if (configStr) {
       const config = JSON.parse(configStr);
-      // 兼容旧版本的配置格式
-      if (config.enabled !== undefined) {
-        config.autoStart = config.enabled;
-        delete config.enabled;
-      }
-
       // 如果启用了自动启动，则启动MCP服务器
       if (config.autoStart) {
         const result = await invoke("start_mcp_server", {
