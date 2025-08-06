@@ -49,8 +49,20 @@
               v-model="mcpConfig.host"
               type="text"
               placeholder="127.0.0.1"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              @blur="validateHost"
+              :class="[
+                'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white',
+                hostError
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600',
+              ]"
             />
+            <p
+              v-if="hostError"
+              class="mt-1 text-xs text-red-500 dark:text-red-400"
+            >
+              {{ hostError }}
+            </p>
           </div>
           <div>
             <label
@@ -61,9 +73,21 @@
             <input
               v-model.number="mcpConfig.port"
               type="number"
-              placeholder="8080"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="9800"
+              @blur="validatePort"
+              :class="[
+                'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white',
+                portError
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600',
+              ]"
             />
+            <p
+              v-if="portError"
+              class="mt-1 text-xs text-red-500 dark:text-red-400"
+            >
+              {{ portError }}
+            </p>
           </div>
         </div>
 
@@ -200,6 +224,7 @@
 import { ref, onMounted, watch } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import { useSettingsDatabase } from "../composables/useSettingsDatabase";
+import { useI18n } from "vue-i18n";
 
 interface McpServerConfig {
   autoStart: boolean;
@@ -208,6 +233,7 @@ interface McpServerConfig {
 }
 
 const { saveSetting, getSetting } = useSettingsDatabase();
+const { t } = useI18n();
 
 // 响应式数据
 const mcpConfig = ref<McpServerConfig>({
@@ -221,6 +247,8 @@ const isStarting = ref(false);
 const isStopping = ref(false);
 const isServerRunning = ref(false);
 const serverAddress = ref<string>("");
+const hostError = ref<string>("");
+const portError = ref<string>("");
 
 // 加载配置
 const loadConfig = async () => {
@@ -271,6 +299,14 @@ const checkServerStatus = async () => {
 
 // 启动 MCP Server
 const startMcpServer = async () => {
+  // 验证输入
+  const isHostValid = validateHost();
+  const isPortValid = validatePort();
+
+  if (!isHostValid || !isPortValid) {
+    return;
+  }
+
   isStarting.value = true;
   try {
     const result = await invoke("start_mcp_server", {
@@ -314,6 +350,47 @@ const getMcpJson = () => {
     inputs: [],
   };
   return JSON.stringify(mcpJsonConfig, null, 2);
+};
+
+// 验证IP地址
+const validateHost = () => {
+  const host = mcpConfig.value.host.trim();
+  if (!host) {
+    hostError.value = t("settings.hostRequired");
+    return false;
+  }
+
+  // IP地址正则表达式
+  const ipRegex =
+    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  const localhostRegex = /^localhost$/;
+
+  if (!ipRegex.test(host) && !localhostRegex.test(host)) {
+    hostError.value = t("settings.invalidHost");
+    return false;
+  }
+
+  hostError.value = "";
+  return true;
+};
+
+// 验证端口
+const validatePort = () => {
+  const port = mcpConfig.value.port;
+  if (!port || port < 1 || port > 65535) {
+    portError.value = t("settings.portRangeError");
+    return false;
+  }
+
+  // 检查是否为常用端口
+  const commonPorts = [80, 443, 22, 21, 23, 25, 53, 110, 143, 993, 995];
+  if (commonPorts.includes(port)) {
+    portError.value = t("settings.commonPortWarning");
+    return true; // 返回true因为这只是警告
+  }
+
+  portError.value = "";
+  return true;
 };
 
 // 复制 MCP JSON 配置

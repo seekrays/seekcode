@@ -37,7 +37,7 @@ impl Default for McpServerConfig {
         Self {
             enabled: false,
             host: "127.0.0.1".to_string(),
-            port: 8080,
+            port: 9800,
             allow_query: true,
             allow_create: true,
             allow_update: true,
