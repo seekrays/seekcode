@@ -221,6 +221,9 @@ export default {
     invalidHost: "Please enter a valid IP address or localhost",
     portRangeError: "Port number must be between 1-65535",
     commonPortWarning: "Warning: This port is commonly used and may be occupied by other services",
+    
+    // Help links
+    mcpHelp: "MCP Usage Help",
 
     // Update
     checkUpdate: "Check for Updates",

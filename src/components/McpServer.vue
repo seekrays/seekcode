@@ -10,6 +10,14 @@
         >
           <i class="fas fa-plug text-blue-500"></i>
           {{ $t("settings.mcpManagement") }}
+          <a
+            href="https://seekrays.com/seekcode/redirect?t=faq_mcp"
+            target="_blank"
+            class="text-gray-400 hover:text-blue-500 transition-colors duration-200"
+            :title="t('settings.mcpHelp')"
+          >
+            <i class="fas fa-question-circle text-sm"></i>
+          </a>
         </h3>
         <div class="flex items-center gap-3">
           <span

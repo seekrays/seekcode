@@ -221,6 +221,9 @@ export default {
     invalidHost: "请输入有效的IP地址或localhost",
     portRangeError: "端口号必须在1-65535之间",
     commonPortWarning: "警告：该端口为常用端口，可能被其他服务占用",
+    
+    // 帮助链接
+    mcpHelp: "MCP 使用帮助",
   },
 
   // 快捷键
