@@ -195,6 +195,26 @@ export default {
     updateNotAvailable: "已是最新版本",
     updateError: "检查更新失败",
     updating: "正在更新...",
+
+    // MCP 管理
+    mcpManagement: "MCP 管理",
+    listenAddress: "监听地址",
+    listenPort: "监听端口",
+    autoStartMcpServer: "自动启动MCP Server",
+    autoStartMcpServerDesc: "开机时自动启动MCP服务",
+    running: "运行中",
+    stopped: "已停止",
+    starting: "启动中...",
+    stopping: "停止中...",
+    startService: "启动服务",
+    stopService: "停止服务",
+    features: "功能",
+    querySnippets: "查询代码片段",
+    createSnippets: "新增代码片段",
+    mcpJsonConfig: "MCP JSON 配置",
+    copyConfig: "复制配置",
+    runningStatus: "运行状态",
+    address: "地址",
   },
 
   // 快捷键

@@ -37,7 +37,7 @@
     </div>
 
     <!-- 链接和联系方式 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+    <div class="grid grid-cols-4 gap-3">
       <!-- 官网 -->
       <a
         href="https://seekrays.com/seekcode"
@@ -91,6 +91,22 @@
           <h5 class="font-medium text-gray-900 dark:text-white">
             {{ $t("settings.contact") }}
           </h5>
+        </div>
+      </a>
+
+      <!-- GitHub -->
+      <a
+        href="https://github.com/seekrays/seekcode"
+        target="_blank"
+        class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600/50 transition-colors duration-200"
+      >
+        <div
+          class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+        >
+          <i class="fab fa-github text-gray-800 dark:text-gray-200"></i>
+        </div>
+        <div>
+          <h5 class="font-medium text-gray-900 dark:text-white">GitHub</h5>
         </div>
       </a>
     </div>

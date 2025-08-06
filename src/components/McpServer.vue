@@ -9,7 +9,7 @@
           class="text-lg font-medium text-gray-900 dark:text-white flex items-center gap-2"
         >
           <i class="fas fa-plug text-blue-500"></i>
-          MCP 管理
+          {{ $t("settings.mcpManagement") }}
         </h3>
         <div class="flex items-center gap-3">
           <span
@@ -28,7 +28,9 @@
               "
               class="mr-1"
             ></i>
-            {{ isServerRunning ? "运行中" : "已停止" }}
+            {{
+              isServerRunning ? $t("settings.running") : $t("settings.stopped")
+            }}
           </span>
         </div>
       </div>
@@ -41,7 +43,7 @@
             <label
               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              监听地址
+              {{ $t("settings.listenAddress") }}
             </label>
             <input
               v-model="mcpConfig.host"
@@ -54,7 +56,7 @@
             <label
               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              监听端口
+              {{ $t("settings.listenPort") }}
             </label>
             <input
               v-model.number="mcpConfig.port"
@@ -75,24 +77,41 @@
               <label
                 class="text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                自动启动MCP Server
+                {{ $t("settings.autoStartMcpServer") }}
               </label>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                开机时自动启动MCP服务
+                {{ $t("settings.autoStartMcpServerDesc") }}
               </p>
             </div>
           </div>
-          <input
-            v-model="mcpConfig.autoStart"
-            type="checkbox"
-            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-          />
+          <label class="flex items-center cursor-pointer">
+            <input
+              v-model="mcpConfig.autoStart"
+              type="checkbox"
+              class="sr-only"
+            />
+            <div
+              :class="[
+                'relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+                mcpConfig.autoStart
+                  ? 'bg-blue-500'
+                  : 'bg-gray-200 dark:bg-gray-700',
+              ]"
+            >
+              <span
+                :class="[
+                  'inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out',
+                  mcpConfig.autoStart ? 'translate-x-6' : 'translate-x-1',
+                ]"
+              ></span>
+            </div>
+          </label>
         </div>
 
         <!-- 功能 -->
         <div class="space-y-3">
           <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
-            功能
+            {{ $t("settings.features") }}
           </h4>
 
           <div class="grid grid-cols-2 gap-4">
@@ -100,17 +119,17 @@
               class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
             >
               <i class="fas fa-search text-blue-500"></i>
-              <span class="text-sm text-gray-700 dark:text-gray-300"
-                >查询代码片段</span
-              >
+              <span class="text-sm text-gray-700 dark:text-gray-300">{{
+                $t("settings.querySnippets")
+              }}</span>
             </div>
             <div
               class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
             >
               <i class="fas fa-plus text-green-500"></i>
-              <span class="text-sm text-gray-700 dark:text-gray-300"
-                >新增代码片段</span
-              >
+              <span class="text-sm text-gray-700 dark:text-gray-300">{{
+                $t("settings.createSnippets")
+              }}</span>
             </div>
           </div>
         </div>
@@ -124,7 +143,9 @@
             class="px-8 py-3 text-base font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             <i class="fas fa-play mr-2"></i>
-            {{ isStarting ? "启动中..." : "启动服务" }}
+            {{
+              isStarting ? $t("settings.starting") : $t("settings.startService")
+            }}
           </button>
           <button
             v-if="isServerRunning"
@@ -133,7 +154,9 @@
             class="px-8 py-3 text-base font-medium bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             <i class="fas fa-stop mr-2"></i>
-            {{ isStopping ? "停止中..." : "停止服务" }}
+            {{
+              isStopping ? $t("settings.stopping") : $t("settings.stopService")
+            }}
           </button>
         </div>
       </div>
@@ -143,13 +166,13 @@
     <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
       <div class="flex items-center justify-between mb-4">
         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
-          MCP JSON 配置
+          {{ $t("settings.mcpJsonConfig") }}
         </h4>
         <button
           @click="copyMcpJson"
           class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
         >
-          复制配置
+          {{ $t("settings.copyConfig") }}
         </button>
       </div>
       <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
@@ -158,9 +181,15 @@
         }}</pre>
       </div>
       <div class="mt-3 text-xs text-gray-500 dark:text-gray-400">
-        <p>运行状态: {{ isServerRunning ? "运行中" : "已停止" }}</p>
         <p>
-          地址: {{ serverAddress || `${mcpConfig.host}:${mcpConfig.port}/sse` }}
+          {{ $t("settings.runningStatus") }}:
+          {{
+            isServerRunning ? $t("settings.running") : $t("settings.stopped")
+          }}
+        </p>
+        <p>
+          {{ $t("settings.address") }}:
+          {{ serverAddress || `${mcpConfig.host}:${mcpConfig.port}/sse` }}
         </p>
       </div>
     </div>

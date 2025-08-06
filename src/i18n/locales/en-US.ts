@@ -196,6 +196,26 @@ export default {
     settingsError: "Settings Error",
     settingsReset: "Settings reset",
 
+    // MCP Management
+    mcpManagement: "MCP Management",
+    listenAddress: "Listen Address",
+    listenPort: "Listen Port",
+    autoStartMcpServer: "Auto Start MCP Server",
+    autoStartMcpServerDesc: "Start MCP service automatically on boot",
+    running: "Running",
+    stopped: "Stopped",
+    starting: "Starting...",
+    stopping: "Stopping...",
+    startService: "Start Service",
+    stopService: "Stop Service",
+    features: "Features",
+    querySnippets: "Query Code Snippets",
+    createSnippets: "Create Code Snippets",
+    mcpJsonConfig: "MCP JSON Config",
+    copyConfig: "Copy Config",
+    runningStatus: "Running Status",
+    address: "Address",
+
     // Update
     checkUpdate: "Check for Updates",
     installUpdate: "Install Update",
