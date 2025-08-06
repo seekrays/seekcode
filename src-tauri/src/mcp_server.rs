@@ -91,7 +91,7 @@ impl SnippetService {
             .unwrap_or_default();
 
         let now = Local::now().format("%Y-%m-%dT%H:%M:%S").to_string();
-        
+
         let result: std::result::Result<sqlx::sqlite::SqliteQueryResult, sqlx::Error> =
             sqlx::query(
                 "INSERT INTO code_snippets (title, code, language, tags, created_at, updated_at) 
@@ -247,109 +247,109 @@ impl SnippetService {
         }
     }
 
-    #[tool(description = "Update a code snippet")]
-    async fn update_snippet(
-        &self,
-        Parameters(request): Parameters<UpdateSnippetRequest>,
-    ) -> Result<CallToolResult, McpError> {
-        if !self.permissions.allow_update {
-            return Err(McpError::invalid_params("Update not allowed", None));
-        }
-        let mut updates = Vec::new();
-        let mut params = Vec::new();
+    // #[tool(description = "Update a code snippet")]
+    // async fn update_snippet(
+    //     &self,
+    //     Parameters(request): Parameters<UpdateSnippetRequest>,
+    // ) -> Result<CallToolResult, McpError> {
+    //     if !self.permissions.allow_update {
+    //         return Err(McpError::invalid_params("Update not allowed", None));
+    //     }
+    //     let mut updates = Vec::new();
+    //     let mut params = Vec::new();
 
-        if let Some(title) = &request.title {
-            updates.push("title = ?");
-            params.push(title.clone());
-        }
-        if let Some(code) = &request.code {
-            updates.push("code = ?");
-            params.push(code.clone());
-        }
-        if let Some(language) = &request.language {
-            updates.push("language = ?");
-            params.push(language.clone());
-        }
-        if let Some(tags) = &request.tags {
-            updates.push("tags = ?");
-            let tags_json = serde_json::to_string(tags).unwrap_or_default();
-            params.push(tags_json);
-        }
+    //     if let Some(title) = &request.title {
+    //         updates.push("title = ?");
+    //         params.push(title.clone());
+    //     }
+    //     if let Some(code) = &request.code {
+    //         updates.push("code = ?");
+    //         params.push(code.clone());
+    //     }
+    //     if let Some(language) = &request.language {
+    //         updates.push("language = ?");
+    //         params.push(language.clone());
+    //     }
+    //     if let Some(tags) = &request.tags {
+    //         updates.push("tags = ?");
+    //         let tags_json = serde_json::to_string(tags).unwrap_or_default();
+    //         params.push(tags_json);
+    //     }
 
-        if updates.is_empty() {
-            return Err(McpError::invalid_params("No fields to update", None));
-        }
+    //     if updates.is_empty() {
+    //         return Err(McpError::invalid_params("No fields to update", None));
+    //     }
 
-        let now = Local::now().format("%Y-%m-%dT%H:%M:%S").to_string();
-        updates.push("updated_at = ?");
-        let query_str = format!(
-            "UPDATE code_snippets SET {} WHERE id = ?",
-            updates.join(", ")
-        );
-        params.push(now);
-        params.push(request.id.to_string());
+    //     let now = Local::now().format("%Y-%m-%dT%H:%M:%S").to_string();
+    //     updates.push("updated_at = ?");
+    //     let query_str = format!(
+    //         "UPDATE code_snippets SET {} WHERE id = ?",
+    //         updates.join(", ")
+    //     );
+    //     params.push(now);
+    //     params.push(request.id.to_string());
 
-        let mut query = sqlx::query(&query_str);
-        for param in params {
-            query = query.bind(param);
-        }
+    //     let mut query = sqlx::query(&query_str);
+    //     for param in params {
+    //         query = query.bind(param);
+    //     }
 
-        let result = query.execute(&self.db_pool).await;
+    //     let result = query.execute(&self.db_pool).await;
 
-        match result {
-            Ok(query_result) => {
-                if query_result.rows_affected() > 0 {
-                    Ok(CallToolResult::success(vec![Content::text(
-                        json!({
-                            "success": true,
-                            "message": "Snippet updated successfully"
-                        })
-                        .to_string(),
-                    )]))
-                } else {
-                    Err(McpError::invalid_params("Snippet not found", None))
-                }
-            }
-            Err(e) => Err(McpError::internal_error(
-                format!("Failed to update snippet: {}", e),
-                None,
-            )),
-        }
-    }
+    //     match result {
+    //         Ok(query_result) => {
+    //             if query_result.rows_affected() > 0 {
+    //                 Ok(CallToolResult::success(vec![Content::text(
+    //                     json!({
+    //                         "success": true,
+    //                         "message": "Snippet updated successfully"
+    //                     })
+    //                     .to_string(),
+    //                 )]))
+    //             } else {
+    //                 Err(McpError::invalid_params("Snippet not found", None))
+    //             }
+    //         }
+    //         Err(e) => Err(McpError::internal_error(
+    //             format!("Failed to update snippet: {}", e),
+    //             None,
+    //         )),
+    //     }
+    // }
 
-    #[tool(description = "Delete a code snippet")]
-    async fn delete_snippet(
-        &self,
-        Parameters(request): Parameters<IdRequest>,
-    ) -> Result<CallToolResult, McpError> {
-        if !self.permissions.allow_delete {
-            return Err(McpError::invalid_params("Delete not allowed", None));
-        }
-        let result = sqlx::query("DELETE FROM code_snippets WHERE id = ?")
-            .bind(request.id)
-            .execute(&self.db_pool)
-            .await;
+    // #[tool(description = "Delete a code snippet")]
+    // async fn delete_snippet(
+    //     &self,
+    //     Parameters(request): Parameters<IdRequest>,
+    // ) -> Result<CallToolResult, McpError> {
+    //     if !self.permissions.allow_delete {
+    //         return Err(McpError::invalid_params("Delete not allowed", None));
+    //     }
+    //     let result = sqlx::query("DELETE FROM code_snippets WHERE id = ?")
+    //         .bind(request.id)
+    //         .execute(&self.db_pool)
+    //         .await;
 
-        match result {
-            Ok(query_result) => {
-                if query_result.rows_affected() > 0 {
-                    Ok(CallToolResult::success(vec![Content::text(
-                        json!({
-                            "success": true,
-                            "message": "Snippet deleted successfully"
-                        })
-                        .to_string(),
-                    )]))
-                } else {
-                    Err(McpError::invalid_params("Snippet not found", None))
-                }
-            }
-            Err(e) => Err(McpError::internal_error(
-                format!("Failed to delete snippet: {}", e),
-                None,
-            )),
-        }
-    }
+    //     match result {
+    //         Ok(query_result) => {
+    //             if query_result.rows_affected() > 0 {
+    //                 Ok(CallToolResult::success(vec![Content::text(
+    //                     json!({
+    //                         "success": true,
+    //                         "message": "Snippet deleted successfully"
+    //                     })
+    //                     .to_string(),
+    //                 )]))
+    //             } else {
+    //                 Err(McpError::invalid_params("Snippet not found", None))
+    //             }
+    //         }
+    //         Err(e) => Err(McpError::internal_error(
+    //             format!("Failed to delete snippet: {}", e),
+    //             None,
+    //         )),
+    //     }
+    // }
 
     #[tool(description = "List all code snippets with pagination")]
     async fn list_snippets(
