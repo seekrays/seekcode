@@ -215,15 +215,32 @@ export default {
     copyConfig: "Copy Config",
     runningStatus: "Running Status",
     address: "Address",
-    
+
     // Validation error messages
     hostRequired: "Please enter an IP address",
     invalidHost: "Please enter a valid IP address or localhost",
     portRangeError: "Port number must be between 1-65535",
-    commonPortWarning: "Warning: This port is commonly used and may be occupied by other services",
-    
+    commonPortWarning:
+      "Warning: This port is commonly used and may be occupied by other services",
+
     // Help links
     mcpHelp: "MCP Usage Help",
+
+    // Data Management
+    data: "Data Management",
+    exportData: "Data Export",
+    exportDataDesc: "Export your code snippets data for backup and migration",
+    exportSnippets: "Export Code Snippets",
+    exporting: "Exporting...",
+    importData: "Data Import",
+    importDataDesc:
+      "Import code snippets data from JSON files, support migration from other devices",
+    importing: "Importing...",
+    clearExistingData: "Clear Existing Data",
+    clearExistingDataDesc:
+      "Clear all existing code snippets before import (use with caution)",
+    dataStatistics: "Data Statistics",
+    snippetsCount: "Code Snippets Count",
 
     // Update
     checkUpdate: "Check for Updates",

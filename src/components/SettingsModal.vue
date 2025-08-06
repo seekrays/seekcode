@@ -68,6 +68,21 @@
 
             <li>
               <button
+                @click="setActiveTab('data')"
+                :class="[
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
+                  settingsState.activeTab === 'data'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]"
+              >
+                <i class="fas fa-database text-lg"></i>
+                <span class="font-medium">{{ $t("settings.data") }}</span>
+              </button>
+            </li>
+
+            <li>
+              <button
                 @click="setActiveTab('about')"
                 :class="[
                   'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
@@ -98,6 +113,8 @@
                 ? $t("settings.appearance")
                 : settingsState.activeTab === "mcpServer"
                 ? $t("settings.mcp")
+                : settingsState.activeTab === "data"
+                ? $t("settings.data")
                 : $t("settings.about")
             }}
           </h3>
@@ -120,6 +137,9 @@
           <!-- MCP 服务器管理 -->
           <McpServer v-else-if="settingsState.activeTab === 'mcpServer'" />
 
+          <!-- 数据管理 -->
+          <DataManagement v-else-if="settingsState.activeTab === 'data'" />
+
           <!-- 关于页面 -->
           <AboutPage v-else-if="settingsState.activeTab === 'about'" />
         </div>
@@ -134,6 +154,7 @@ import GeneralSettings from "./GeneralSettings.vue";
 import ThemeSettings from "./ThemeSettings.vue";
 import AboutPage from "./AboutPage.vue";
 import McpServer from "./McpServer.vue";
+import DataManagement from "./DataManagement.vue";
 
 const { settingsState, closeSettings, setActiveTab } = useUserSettings();
 </script>

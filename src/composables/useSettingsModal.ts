@@ -10,7 +10,7 @@ const settingsState = ref<SettingsState>({
 export function useSettingsModal() {
   // 打开设置弹窗
   const openSettings = (
-    tab: "general" | "appearance" | "mcpServer" | "about" = "general"
+    tab: "general" | "appearance" | "mcpServer" | "data" | "about" = "general"
   ) => {
     settingsState.value.isOpen = true;
     settingsState.value.activeTab = tab;
@@ -23,7 +23,7 @@ export function useSettingsModal() {
 
   // 切换设置标签
   const setActiveTab = (
-    tab: "general" | "appearance" | "mcpServer" | "about"
+    tab: "general" | "appearance" | "mcpServer" | "data" | "about"
   ) => {
     settingsState.value.activeTab = tab;
   };
