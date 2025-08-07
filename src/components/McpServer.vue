@@ -414,7 +414,7 @@ const copyMcpJson = async () => {
 // 监听配置变化，自动保存
 watch(
   mcpConfig,
-  async (newConfig) => {
+  async () => {
     // 延迟保存，避免频繁保存
     setTimeout(() => {
       autoSaveConfig();
