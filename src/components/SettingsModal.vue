@@ -5,13 +5,13 @@
     @click.self="closeSettings"
   >
     <div
-      class="w-full max-w-3xl h-[70vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex"
+      class="w-full max-w-5xl h-[85vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex"
     >
       <!-- 左侧导航 -->
       <div
-        class="w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col"
+        class="w-56 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col"
       >
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div class="p-8 border-b border-gray-200 dark:border-gray-700">
           <h2
             class="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2"
           >
@@ -26,7 +26,7 @@
               <button
                 @click="setActiveTab('general')"
                 :class="[
-                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-3',
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
                   settingsState.activeTab === 'general'
                     ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
@@ -40,7 +40,7 @@
               <button
                 @click="setActiveTab('appearance')"
                 :class="[
-                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-3',
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
                   settingsState.activeTab === 'appearance'
                     ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
@@ -53,9 +53,24 @@
 
             <li>
               <button
+                @click="setActiveTab('mcpServer')"
+                :class="[
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
+                  settingsState.activeTab === 'mcpServer'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]"
+              >
+                <i class="fas fa-plug text-lg"></i>
+                <span class="font-medium">{{ $t("settings.mcp") }}</span>
+              </button>
+            </li>
+
+            <li>
+              <button
                 @click="setActiveTab('about')"
                 :class="[
-                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-3',
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
                   settingsState.activeTab === 'about'
                     ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
@@ -73,7 +88,7 @@
       <div class="flex-1 flex flex-col">
         <!-- 标题栏 -->
         <div
-          class="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"
+          class="p-8 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"
         >
           <h3 class="text-lg font-medium text-gray-900 dark:text-white">
             {{
@@ -81,6 +96,8 @@
                 ? $t("settings.general")
                 : settingsState.activeTab === "appearance"
                 ? $t("settings.appearance")
+                : settingsState.activeTab === "mcpServer"
+                ? $t("settings.mcp")
                 : $t("settings.about")
             }}
           </h3>
@@ -93,12 +110,15 @@
         </div>
 
         <!-- 内容区域 -->
-        <div class="flex-1 p-6 overflow-y-auto scroll-smooth">
+        <div class="flex-1 p-8 overflow-y-auto scroll-smooth">
           <!-- 通用设置 -->
           <GeneralSettings v-if="settingsState.activeTab === 'general'" />
 
           <!-- 外观设置 -->
           <ThemeSettings v-else-if="settingsState.activeTab === 'appearance'" />
+
+          <!-- MCP 服务器管理 -->
+          <McpServer v-else-if="settingsState.activeTab === 'mcpServer'" />
 
           <!-- 关于页面 -->
           <AboutPage v-else-if="settingsState.activeTab === 'about'" />
@@ -113,6 +133,7 @@ import { useUserSettings } from "../composables/useUserSettings";
 import GeneralSettings from "./GeneralSettings.vue";
 import ThemeSettings from "./ThemeSettings.vue";
 import AboutPage from "./AboutPage.vue";
+import McpServer from "./McpServer.vue";
 
 const { settingsState, closeSettings, setActiveTab } = useUserSettings();
 </script>

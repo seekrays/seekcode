@@ -123,6 +123,7 @@ export default {
     general: "通用",
     appearance: "外观",
     language: "语言",
+    mcp: "MCP管理",
     about: "关于",
 
     // 通用设置
@@ -194,6 +195,35 @@ export default {
     updateNotAvailable: "已是最新版本",
     updateError: "检查更新失败",
     updating: "正在更新...",
+
+    // MCP 管理
+    mcpManagement: "MCP 管理",
+    listenAddress: "监听地址",
+    listenPort: "监听端口",
+    autoStartMcpServer: "自动启动MCP Server",
+    autoStartMcpServerDesc: "开机时自动启动MCP服务",
+    running: "运行中",
+    stopped: "已停止",
+    starting: "启动中...",
+    stopping: "停止中...",
+    startService: "启动服务",
+    stopService: "停止服务",
+    features: "功能",
+    querySnippets: "查询代码片段",
+    createSnippets: "新增代码片段",
+    mcpJsonConfig: "MCP JSON 配置",
+    copyConfig: "复制配置",
+    runningStatus: "运行状态",
+    address: "地址",
+
+    // 验证错误信息
+    hostRequired: "请输入IP地址",
+    invalidHost: "请输入有效的IP地址或localhost",
+    portRangeError: "端口号必须在1-65535之间",
+    commonPortWarning: "警告：该端口为常用端口，可能被其他服务占用",
+    
+    // 帮助链接
+    mcpHelp: "MCP 使用帮助",
   },
 
   // 快捷键

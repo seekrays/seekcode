@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod commands;
+mod mcp_server;
 mod models;
 
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconEvent};
@@ -96,12 +97,14 @@ pub fn run() {
         )
         .invoke_handler(tauri::generate_handler![
             commands::get_current_timestamp,
-            commands::get_supported_languages,
             commands::get_clipboard_content,
             commands::set_clipboard_content,
             commands::show_window,
             commands::hide_window,
             commands::is_window_visible,
+            commands::start_mcp_server,
+            commands::stop_mcp_server,
+            commands::get_mcp_server_status,
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application");

@@ -19,6 +19,11 @@ export interface GeneralSettings {
   language: string;
 }
 
+export interface SettingsState {
+  isOpen: boolean;
+  activeTab: "general" | "appearance" | "mcpServer" | "about";
+}
+
 export function useUserSettings() {
   // 组合各个模块
   const generalSettings = useGeneralSettings();

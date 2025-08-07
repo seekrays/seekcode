@@ -1,3 +1,6 @@
+use crate::mcp_server::{
+    get_server_address, is_server_running, start_server, start_server_with_permissions, stop_server,
+};
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
@@ -241,30 +244,6 @@ pub fn get_current_timestamp() -> String {
     chrono::Local::now().format("%Y-%m-%dT%H:%M:%S").to_string()
 }
 
-/// 获取支持的编程语言列表
-#[tauri::command]
-pub fn get_supported_languages() -> Vec<String> {
-    vec![
-        "javascript".to_string(),
-        "typescript".to_string(),
-        "vue".to_string(),
-        "rust".to_string(),
-        "python".to_string(),
-        "css".to_string(),
-        "html".to_string(),
-        "go".to_string(),
-        "java".to_string(),
-        "php".to_string(),
-        "sql".to_string(),
-        "shell".to_string(),
-        "json".to_string(),
-        "markdown".to_string(),
-        "yaml".to_string(),
-        "xml".to_string(),
-        "text".to_string(),
-    ]
-}
-
 // ============================================================================
 // 剪贴板相关
 // ============================================================================
@@ -330,4 +309,73 @@ pub fn is_window_visible(app: tauri::AppHandle) -> Result<bool, String> {
     } else {
         Ok(false)
     }
+}
+
+// ============================================================================
+// MCP 服务器控制
+// ============================================================================
+
+/// 启动MCP服务器
+#[tauri::command]
+pub async fn start_mcp_server(
+    app: tauri::AppHandle,
+    _host: Option<String>,
+    port: Option<u16>,
+    allow_query: Option<bool>,
+    allow_create: Option<bool>,
+    allow_update: Option<bool>,
+    allow_delete: Option<bool>,
+) -> Result<String, String> {
+    let port = port.unwrap_or(9800);
+    let allow_query = allow_query.unwrap_or(true);
+    let allow_create = allow_create.unwrap_or(true);
+    let allow_update = allow_update.unwrap_or(false);
+    let allow_delete = allow_delete.unwrap_or(false);
+
+    // 创建数据库连接池
+    let app_data_dir = app
+        .path()
+        .app_data_dir()
+        .unwrap_or_else(|_| std::path::PathBuf::from("."));
+    let db_path = app_data_dir.join("seekcode.db");
+    let db_url = format!("sqlite:{}", db_path.to_string_lossy());
+
+    let db_pool = sqlx::SqlitePool::connect(&db_url)
+        .await
+        .map_err(|e| format!("数据库连接失败: {}", e))?;
+
+    match start_server_with_permissions(
+        db_pool,
+        port,
+        allow_query,
+        allow_create,
+        allow_update,
+        allow_delete,
+    )
+    .await
+    {
+        Ok(addr) => Ok(format!("MCP服务器启动成功，地址: {}", addr)),
+        Err(e) => Err(format!("启动MCP服务器失败: {}", e)),
+    }
+}
+
+/// 停止MCP服务器
+#[tauri::command]
+pub async fn stop_mcp_server() -> Result<String, String> {
+    match stop_server().await {
+        Ok(_) => Ok("MCP服务器停止成功".to_string()),
+        Err(e) => Err(format!("停止MCP服务器失败: {}", e)),
+    }
+}
+
+/// 查询MCP服务器状态
+#[tauri::command]
+pub async fn get_mcp_server_status() -> Result<serde_json::Value, String> {
+    let is_running = is_server_running().await;
+    let address = get_server_address().await;
+
+    Ok(serde_json::json!({
+        "running": is_running,
+        "address": address.map(|addr| addr.to_string())
+    }))
 }

@@ -125,6 +125,7 @@ export default {
     general: "General",
     appearance: "Appearance",
     language: "Language",
+    mcp: "MCP Management",
     about: "About",
 
     // General settings
@@ -194,6 +195,35 @@ export default {
     settingsSaved: "Settings saved",
     settingsError: "Settings Error",
     settingsReset: "Settings reset",
+
+    // MCP Management
+    mcpManagement: "MCP Management",
+    listenAddress: "Listen Address",
+    listenPort: "Listen Port",
+    autoStartMcpServer: "Auto Start MCP Server",
+    autoStartMcpServerDesc: "Start MCP service automatically on boot",
+    running: "Running",
+    stopped: "Stopped",
+    starting: "Starting...",
+    stopping: "Stopping...",
+    startService: "Start Service",
+    stopService: "Stop Service",
+    features: "Features",
+    querySnippets: "Query Code Snippets",
+    createSnippets: "Create Code Snippets",
+    mcpJsonConfig: "MCP JSON Config",
+    copyConfig: "Copy Config",
+    runningStatus: "Running Status",
+    address: "Address",
+    
+    // Validation error messages
+    hostRequired: "Please enter an IP address",
+    invalidHost: "Please enter a valid IP address or localhost",
+    portRangeError: "Port number must be between 1-65535",
+    commonPortWarning: "Warning: This port is commonly used and may be occupied by other services",
+    
+    // Help links
+    mcpHelp: "MCP Usage Help",
 
     // Update
     checkUpdate: "Check for Updates",

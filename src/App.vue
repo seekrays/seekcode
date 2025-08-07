@@ -325,6 +325,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
+import { invoke } from "@tauri-apps/api/core";
 import type {
   ContextMenuState,
   TabType,
@@ -335,6 +336,7 @@ import { useSnippets } from "./composables/useSnippets";
 import { useClipboard } from "./composables/useClipboard";
 import { useUserSettings } from "./composables/useUserSettings";
 import { useAppUpdater } from "./composables/useAppUpdater";
+import { useSettingsDatabase } from "./composables/useSettingsDatabase";
 
 import CodeSnippetList from "./components/CodeSnippetList.vue";
 import ClipboardHistory from "./components/ClipboardHistory.vue";
@@ -398,6 +400,36 @@ const {
 } = useClipboard();
 
 const { openSettings, initializeUserSettings } = useUserSettings();
+const { getSetting } = useSettingsDatabase();
+
+// 检查并自动启动MCP服务器
+const checkAndStartMcpServer = async () => {
+  try {
+    // 获取MCP配置
+    const configStr = await getSetting("mcp_server");
+    if (configStr) {
+      const config = JSON.parse(configStr);
+      // 如果启用了自动启动，则启动MCP服务器
+      if (config.autoStart) {
+        const result = await invoke("start_mcp_server", {
+          host: config.host || "127.0.0.1",
+          port: config.port || 9800,
+          allow_query:
+            config.allow_query !== undefined ? config.allow_query : true,
+          allow_create:
+            config.allow_create !== undefined ? config.allow_create : true,
+          allow_update:
+            config.allow_update !== undefined ? config.allow_update : false,
+          allow_delete:
+            config.allow_delete !== undefined ? config.allow_delete : false,
+        });
+        console.log("MCP Server auto-started:", result);
+      }
+    }
+  } catch (error) {
+    console.error("Failed to auto-start MCP Server:", error);
+  }
+};
 
 // 计算属性
 const error = computed(() => snippetsError.value || clipboardError.value);
@@ -648,6 +680,9 @@ onMounted(async () => {
     await startClipboardMonitoring();
     // 检查更新
     await checkForUpdates();
+
+    // 检查并自动启动MCP服务器
+    await checkAndStartMcpServer();
   } catch (error) {
     console.error("Failed to initialize app:", error);
   }
