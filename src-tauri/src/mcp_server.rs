@@ -21,36 +21,55 @@ use tracing;
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
 pub struct CreateSnippetRequest {
+    #[schemars(description = "Title of the code snippet")]
     pub title: String,
+    #[schemars(description = "Content of the code snippet")]
     pub code: String,
+    #[schemars(
+        description = "Programming language type, e.g., 'javascript', 'python', 'rust', etc."
+    )]
     pub language: String,
+    #[schemars(description = "Optional list of tags for categorization and search")]
     pub tags: Option<Vec<String>>,
 }
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
 pub struct UpdateSnippetRequest {
+    #[schemars(description = "ID of the code snippet to update")]
     pub id: i64,
+    #[schemars(description = "Optional title update")]
     pub title: Option<String>,
+    #[schemars(description = "Optional code content update")]
     pub code: Option<String>,
+    #[schemars(description = "Optional programming language update")]
     pub language: Option<String>,
+    #[schemars(description = "Optional tags list update")]
     pub tags: Option<Vec<String>>,
 }
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
 pub struct SearchSnippetRequest {
+    #[schemars(description = "Search keyword to match in title and code content")]
     pub query: String,
+    #[schemars(description = "Optional programming language filter")]
     pub language: Option<String>,
+    #[schemars(
+        description = "Optional tags filter - only return snippets containing specified tags"
+    )]
     pub tags: Option<Vec<String>>,
 }
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
 pub struct IdRequest {
+    #[schemars(description = "Unique identifier of the code snippet")]
     pub id: i64,
 }
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
 pub struct ListRequest {
+    #[schemars(description = "Page number, defaults to 1")]
     pub page: Option<u64>,
+    #[schemars(description = "Number of items per page, defaults to 20")]
     pub limit: Option<u64>,
 }
 
@@ -79,7 +98,9 @@ impl SnippetService {
         }
     }
 
-    #[tool(description = "Create a new code snippet")]
+    #[tool(
+        description = "Create a new code snippet in SeekCode with title, code content, programming language and tags"
+    )]
     async fn create_snippet(
         &self,
         Parameters(request): Parameters<CreateSnippetRequest>,
@@ -125,7 +146,9 @@ impl SnippetService {
         }
     }
 
-    #[tool(description = "Get a code snippet by ID")]
+    #[tool(
+        description = "Get a specific code snippet from SeekCode by ID and return complete snippet information"
+    )]
     async fn get_snippet(
         &self,
         Parameters(request): Parameters<IdRequest>,
@@ -173,7 +196,9 @@ impl SnippetService {
         }
     }
 
-    #[tool(description = "Search code snippets")]
+    #[tool(
+        description = "Search code snippets in SeekCode with keyword search, language filtering and tag filtering"
+    )]
     async fn search_snippets(
         &self,
         Parameters(request): Parameters<SearchSnippetRequest>,
@@ -351,7 +376,9 @@ impl SnippetService {
     //     }
     // }
 
-    #[tool(description = "List all code snippets with pagination")]
+    #[tool(
+        description = "List all code snippets from SeekCode with pagination, supporting custom page number and items per page"
+    )]
     async fn list_snippets(
         &self,
         Parameters(request): Parameters<ListRequest>,
@@ -433,7 +460,7 @@ impl ServerHandler for SnippetService {
                 .enable_tools()
                 .build(),
             server_info: Implementation::from_build_env(),
-            instructions: Some("This server provides code snippet management tools. You can create, read, update, delete, search and list code snippets.".to_string()),
+            instructions: Some("This is the SeekCode MCP server that provides code snippet management features:\n1. Create code snippets in SeekCode - supports title, code content, programming language and tags\n2. Query code snippets from SeekCode - get specific snippets by ID\n3. Search code snippets in SeekCode - supports keyword search, language and tag filtering\n4. List code snippets from SeekCode - supports pagination display\n\nAll tools support detailed parameter descriptions for better understanding and usage.".to_string()),
         }
     }
 

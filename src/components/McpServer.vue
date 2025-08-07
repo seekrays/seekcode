@@ -355,7 +355,6 @@ const getMcpJson = () => {
         type: "http",
       },
     },
-    inputs: [],
   };
   return JSON.stringify(mcpJsonConfig, null, 2);
 };
