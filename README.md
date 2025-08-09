@@ -5,13 +5,14 @@
 
 ## Introduction
 
-SeekCode is a modern desktop app for code management. It combines efficient code snippet organization with clipboard management, featuring tag-based search, syntax highlighting, and seamless clipboard-to-snippet conversion.
+SeekCode is a modern desktop app for code management. It combines efficient code snippet organization with clipboard management, featuring tag-based search, syntax highlighting, and seamless clipboard-to-snippet conversion. It also ships with a built-in MCP server, enabling AI assistants and compatible tools to securely access and automate your snippets and clipboard via the Model Context Protocol (MCP).
 
 ## Features
 
 - **Code Snippet Management**: Store and organize code snippets for multiple programming languages with syntax highlighting and tagging support
-- **Smart Search**: Quickly search and filter code snippets with powerful tag-based capabilities
-- **Clipboard Integration**: Support one-click storage from clipboard to code snippets
+ - **Smart Search**: Quickly search and filter code snippets with powerful tag-based capabilities
+ - **Built-in MCP Server**: Enable AI assistants and compatible tools to securely access and automate your snippets and clipboard via the Model Context Protocol (MCP)
+ - **Clipboard Integration**: Support one-click storage from clipboard to code snippets
 - **Multi-Language Support**: Support for JavaScript, TypeScript, Python, Rust, Go, and many other programming languages
 - **Theme Switching**: Support for light, dark themes and automatic system theme following
 - **Cross-Platform**: Available for macOS and Windows with native performance and system integration
@@ -23,6 +24,9 @@ SeekCode is a modern desktop app for code management. It combines efficient code
 
 ### Clipboard Integration
 ![Clipboard History Interface](https://public-1251960616.cos.ap-nanjing.myqcloud.com/images/clipboard.png)
+
+### MCP Server Support
+![MCP Server Support](https://public-1251960616.cos.ap-nanjing.myqcloud.com/file/vvb507.png)
 
 ### Tag-based Search
 ![Tag Search](https://public-1251960616.cos.ap-nanjing.myqcloud.com/images/tags.png)
