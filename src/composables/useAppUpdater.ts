@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
+import { useI18n } from "vue-i18n";
 
 // 全局单例状态
 const updateDialogVisible = ref(false);
@@ -13,16 +14,17 @@ let updateObj: any = null;
 async function checkForUpdates() {
   if (isChecking.value) return;
   isChecking.value = true;
+  const { t } = useI18n();
   try {
     const update = await check();
     if (update) {
       updateObj = update;
       updateDialogVisible.value = true;
     } else {
-      console.log("当前已是最新版本");
+      console.log(t("update.alreadyLatest"));
     }
   } catch (e) {
-    console.log("检查更新失败");
+    console.log(t("update.checkFailed"));
   } finally {
     isChecking.value = false;
   }
@@ -34,6 +36,7 @@ async function handleUpdate() {
   updateLoading.value = true;
   let downloaded = 0;
   let contentLength = 0;
+  const { t } = useI18n();
   try {
     await updateObj.downloadAndInstall((event: any) => {
       switch (event.event) {
@@ -53,14 +56,14 @@ async function handleUpdate() {
               // 重启应用（会自动退出当前实例）
               await relaunch();
             } catch (e) {
-              console.error("重启失败:", e);
+              console.error(t("update.restartFailed"), e);
             }
           }, 1000);
           break;
       }
     });
   } catch (e) {
-    console.log("更新失败，请稍后重试");
+    console.log(t("update.updateFailed"));
     updateLoading.value = false;
   }
 }

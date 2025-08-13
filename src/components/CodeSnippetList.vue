@@ -91,7 +91,7 @@
             <span
               v-if="snippet.tags.length > 3"
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-600/50 text-gray-500 dark:text-gray-400 flex-shrink-0"
-              :title="`还有 ${snippet.tags.length - 3} 个标签`"
+              :title="$t('tags.moreTags', { count: snippet.tags.length - 3 })"
             >
               +{{ snippet.tags.length - 3 }}
             </span>

@@ -1,4 +1,5 @@
 import { ref, computed, readonly } from "vue";
+import { useI18n } from "vue-i18n";
 import type { ClipboardItem } from "../types";
 import {
   clipboardApi,
@@ -20,6 +21,7 @@ const totalItems = computed(() => clipboardItems.value.length);
 const recentItems = computed(() => clipboardItems.value.slice(0, 10));
 
 export function useClipboard() {
+  const { t } = useI18n();
   // 检查剪贴板内容变化
   const checkClipboardChange = async () => {
     try {
@@ -74,7 +76,8 @@ export function useClipboard() {
       }
     } catch (err) {
       console.error("Failed to initialize clipboard:", err);
-      error.value = err instanceof Error ? err.message : "初始化剪贴板失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.clipboardInitFailed");
     }
   };
 
@@ -91,7 +94,8 @@ export function useClipboard() {
       console.log("Clipboard monitoring started with 2s interval");
     } catch (err) {
       console.error("Failed to start clipboard monitoring:", err);
-      error.value = err instanceof Error ? err.message : "启动剪贴板监听失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.clipboardStartFailed");
     }
   };
 
@@ -108,7 +112,7 @@ export function useClipboard() {
   // 添加剪贴板项
   const addClipboardItem = async (content: string) => {
     if (!content.trim()) {
-      throw new Error("内容不能为空");
+      throw new Error(t("error.contentEmpty"));
     }
 
     error.value = null;
@@ -122,7 +126,8 @@ export function useClipboard() {
       return newItem;
     } catch (err) {
       console.error("Failed to add clipboard item:", err);
-      error.value = err instanceof Error ? err.message : "添加剪贴板项失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.clipboardAddFailed");
       throw err;
     }
   };
@@ -145,7 +150,8 @@ export function useClipboard() {
       }
     } catch (err) {
       console.error("Failed to delete clipboard item:", err);
-      error.value = err instanceof Error ? err.message : "删除剪贴板项失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.clipboardDeleteFailed");
       throw err;
     }
   };
@@ -162,7 +168,8 @@ export function useClipboard() {
       selectedClipboardItem.value = null;
     } catch (err) {
       console.error("Failed to clear clipboard history:", err);
-      error.value = err instanceof Error ? err.message : "清空剪贴板历史失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.clipboardClearFailed");
       throw err;
     }
   };

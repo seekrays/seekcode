@@ -96,6 +96,9 @@ export default {
     createInstructions:
       "Click the + button in the bottom right to create your first code snippet",
     storeAsSnippet: "Store as Code Snippet",
+    tagName: "Tag Name",
+    confirmAdd: "Confirm Add",
+    deleteTag: "Delete Tag",
   },
 
   // Clipboard
@@ -215,13 +218,14 @@ export default {
     copyConfig: "Copy Config",
     runningStatus: "Running Status",
     address: "Address",
-    
+
     // Validation error messages
     hostRequired: "Please enter an IP address",
     invalidHost: "Please enter a valid IP address or localhost",
     portRangeError: "Port number must be between 1-65535",
-    commonPortWarning: "Warning: This port is commonly used and may be occupied by other services",
-    
+    commonPortWarning:
+      "Warning: This port is commonly used and may be occupied by other services",
+
     // Help links
     mcpHelp: "MCP Usage Help",
 
@@ -263,6 +267,14 @@ export default {
     dataCorrupted: "Data Corrupted",
     connectionLost: "Connection Lost",
     timeout: "Operation Timeout",
+    themeGetFailed: "Failed to get theme settings",
+    themeSetFailed: "Failed to set theme",
+    clipboardInitFailed: "Failed to initialize clipboard",
+    clipboardStartFailed: "Failed to start clipboard monitoring",
+    clipboardAddFailed: "Failed to add clipboard item",
+    clipboardDeleteFailed: "Failed to delete clipboard item",
+    clipboardClearFailed: "Failed to clear clipboard history",
+    contentEmpty: "Content cannot be empty",
   },
 
   // Success messages
@@ -291,11 +303,30 @@ export default {
     errorLabel: "Error",
   },
 
+  // Tags
+  tags: {
+    moreTags: "{count} more tags",
+  },
+
   time: {
     invalid_date: "Invalid date",
     just_now: "Just now",
     minutes_ago: "{minutes} minutes ago",
     hours_ago: "{hours} hours ago",
     days_ago: "{days} days ago",
+  },
+
+  // Update dialog
+  update: {
+    dialogTitle: "New Version Found",
+    newVersion: "New Version",
+    releaseNotes: "Release Notes",
+    confirmUpdate: "A new version is available. Update now?",
+    updateNow: "Update Now",
+    downloading: "Downloading update...",
+    alreadyLatest: "Already up to date",
+    checkFailed: "Update check failed",
+    updateFailed: "Update failed, please try again later",
+    restartFailed: "Restart failed",
   },
 };

@@ -94,6 +94,9 @@ export default {
     allLanguages: "所有语言",
     createInstructions: "点击右下角的 + 按钮开始创建你的第一个代码片段",
     storeAsSnippet: "存储为代码片段",
+    tagName: "标签名",
+    confirmAdd: "确认添加",
+    deleteTag: "删除标签",
   },
 
   // 剪贴板
@@ -221,12 +224,24 @@ export default {
     invalidHost: "请输入有效的IP地址或localhost",
     portRangeError: "端口号必须在1-65535之间",
     commonPortWarning: "警告：该端口为常用端口，可能被其他服务占用",
-    
+
     // 帮助链接
     mcpHelp: "MCP 使用帮助",
   },
 
-  // 快捷键
+  // 更新相关
+  update: {
+    dialogTitle: "发现新版本",
+    newVersion: "新版本",
+    releaseNotes: "更新内容",
+    confirmUpdate: "检测到新版本，是否立即更新？",
+    updateNow: "立即更新",
+    downloading: "正在下载更新...",
+    alreadyLatest: "当前已是最新版本",
+    checkFailed: "检查更新失败",
+    updateFailed: "更新失败，请稍后重试",
+    restartFailed: "重启失败",
+  },
   shortcuts: {
     title: "快捷键",
     newSnippet: "新建代码片段",
@@ -255,6 +270,14 @@ export default {
     dataCorrupted: "数据损坏",
     connectionLost: "连接中断",
     timeout: "操作超时",
+    themeGetFailed: "获取主题设置失败",
+    themeSetFailed: "设置主题失败",
+    clipboardInitFailed: "初始化剪贴板失败",
+    clipboardStartFailed: "启动剪贴板监听失败",
+    clipboardAddFailed: "添加剪贴板项失败",
+    clipboardDeleteFailed: "删除剪贴板项失败",
+    clipboardClearFailed: "清空剪贴板历史失败",
+    contentEmpty: "内容不能为空",
   },
 
   // 成功消息
@@ -281,6 +304,11 @@ export default {
     line: "行",
     column: "列",
     errorLabel: "错误",
+  },
+
+  // 标签相关
+  tags: {
+    moreTags: "还有 {count} 个标签",
   },
 
   time: {

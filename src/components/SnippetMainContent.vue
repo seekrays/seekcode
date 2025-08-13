@@ -41,7 +41,7 @@
                 <button
                   @click="removeTag(index)"
                   class="w-3.5 h-3.5 rounded-full bg-blue-200 dark:bg-blue-800/50 hover:bg-blue-300 dark:hover:bg-blue-700/50 flex items-center justify-center transition-colors duration-200 group-hover:bg-blue-300 dark:group-hover:bg-blue-700/50"
-                  title="删除标签"
+                  :title="$t('snippet.deleteTag')"
                 >
                   <i
                     class="fas fa-times text-blue-600 dark:text-blue-300 text-xs"
@@ -58,19 +58,19 @@
                   @blur="handleAddTagBlur"
                   type="text"
                   class="px-2.5 py-1 border border-blue-300 dark:border-blue-600 rounded-full text-xs bg-white dark:bg-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-400/50 dark:focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-500 placeholder-slate-400 dark:placeholder-gray-500 text-slate-700 dark:text-slate-200 min-w-20"
-                  placeholder="标签名"
+                  :placeholder="$t('snippet.tagName')"
                 />
                 <button
                   @click="addTag"
                   class="w-6 h-6 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center transition-colors duration-200"
-                  title="确认添加"
+                  :title="$t('snippet.confirmAdd')"
                 >
                   <i class="fas fa-check text-white text-xs"></i>
                 </button>
                 <button
                   @click="cancelAddTag"
                   class="w-6 h-6 rounded-full bg-gray-400 hover:bg-gray-500 flex items-center justify-center transition-colors duration-200"
-                  title="取消"
+                  :title="$t('common.cancel')"
                 >
                   <i class="fas fa-times text-white text-xs"></i>
                 </button>

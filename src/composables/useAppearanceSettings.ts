@@ -1,4 +1,5 @@
 import { ref, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import type { ThemeMode } from "../types";
 import { useSettingsDatabase } from "./useSettingsDatabase";
 
@@ -19,6 +20,7 @@ const appliedTheme = computed(() => {
 
 export function useAppearanceSettings() {
   const { saveSetting, getSetting } = useSettingsDatabase();
+  const { t } = useI18n();
 
   // 更新系统主题状态
   const updateSystemTheme = () => {
@@ -38,7 +40,8 @@ export function useAppearanceSettings() {
       return (theme as ThemeMode) || "system"; // 默认值
     } catch (err) {
       console.error("Failed to get theme from database:", err);
-      error.value = err instanceof Error ? err.message : "获取主题设置失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.themeGetFailed");
       return "system";
     }
   };
@@ -50,12 +53,13 @@ export function useAppearanceSettings() {
 
     try {
       await saveSetting("theme", theme);
-        currentTheme.value = theme;
-        applyTheme(); // 立即应用主题
+      currentTheme.value = theme;
+      applyTheme(); // 立即应用主题
       return true;
     } catch (err) {
       console.error("Failed to set theme:", err);
-      error.value = err instanceof Error ? err.message : "设置主题失败";
+      error.value =
+        err instanceof Error ? err.message : t("error.themeSetFailed");
       return false;
     } finally {
       loading.value = false;
