@@ -1,5 +1,5 @@
 use crate::mcp_server::{
-    get_server_address, is_server_running, start_server, start_server_with_permissions, stop_server,
+    get_server_address, is_server_running, start_server_with_permissions, stop_server,
 };
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};

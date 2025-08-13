@@ -34,6 +34,7 @@ pub struct CreateSnippetRequest {
 }
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
+#[allow(dead_code)]
 pub struct UpdateSnippetRequest {
     #[schemars(description = "ID of the code snippet to update")]
     pub id: i64,
@@ -48,6 +49,7 @@ pub struct UpdateSnippetRequest {
 }
 
 #[derive(Debug, serde::Deserialize, schemars::JsonSchema)]
+#[allow(dead_code)]
 pub struct SearchSnippetRequest {
     #[schemars(description = "Search keyword to match in title and code content")]
     pub query: String,
@@ -81,6 +83,7 @@ pub struct SnippetService {
 }
 
 #[derive(Clone)]
+#[allow(dead_code)]
 pub struct ServerPermissions {
     pub allow_query: bool,
     pub allow_create: bool,
@@ -557,6 +560,7 @@ pub async fn start_server_with_permissions(
 }
 
 // 保持向后兼容的原始启动函数
+#[allow(dead_code)]
 pub async fn start_server(db_pool: SqlitePool, port: u16) -> Result<SocketAddr> {
     start_server_with_permissions(db_pool, port, true, true, false, false).await
 }
