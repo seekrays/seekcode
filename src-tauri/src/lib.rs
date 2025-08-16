@@ -11,6 +11,7 @@ use tauri::{
     tray::TrayIconBuilder,
     Manager, WindowEvent,
 };
+use tauri_plugin_aptabase::EventTracker;
 
 // 只在 macOS 上导入 RunEvent
 #[cfg(target_os = "macos")]
@@ -19,7 +20,8 @@ use tauri::RunEvent;
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+#[tokio::main]
+pub async fn run() {
     let migrations = commands::get_migrations();
 
     let app = tauri::Builder::default()
@@ -27,7 +29,18 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(
+            tauri_plugin_aptabase::Builder::new("A-SH-1174248246")
+                .with_options(tauri_plugin_aptabase::InitOptions {
+                    host: Some("https://seekrays.com:9999".to_string()),
+                    ..Default::default()
+                })
+                .build(),
+        )
         .setup(|app| {
+            // 追踪应用启动事件
+            let _ = app.track_event("app_started", None);
+
             #[cfg(desktop)]
             app.handle().plugin(tauri_plugin_autostart::init(
                 tauri_plugin_autostart::MacosLauncher::LaunchAgent,
@@ -53,6 +66,9 @@ pub fn run() {
                         }
                     }
                     "quit" => {
+                        // 追踪应用退出事件
+                        let _ = app.track_event("app_exited", None);
+                        app.flush_events_blocking();
                         app.exit(0);
                     }
                     _ => {}
@@ -128,6 +144,11 @@ pub fn run() {
                         }
                     }
                 }
+                RunEvent::Exit { .. } => {
+                    // 追踪应用退出事件
+                    let _ = app_handle.track_event("app_exited", None);
+                    app_handle.flush_events_blocking();
+                }
                 _ => {}
             }
         });
@@ -136,8 +157,15 @@ pub fn run() {
     // 在非 macOS 平台上，直接运行应用
     #[cfg(not(target_os = "macos"))]
     {
-        app.run(|_app_handle, _event| {
-            // 在其他平台上不需要处理特殊事件
+        app.run(|app_handle, event| {
+            match event {
+                tauri::RunEvent::Exit { .. } => {
+                    // 追踪应用退出事件
+                    let _ = app_handle.track_event("app_exited", None);
+                    app_handle.flush_events_blocking();
+                }
+                _ => {}
+            }
         });
     }
 }
