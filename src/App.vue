@@ -692,6 +692,21 @@ watch(
   }
 );
 
+// 数据刷新事件处理器
+const handleDataRefresh = async (event: Event) => {
+  try {
+    const customEvent = event as CustomEvent;
+    if (customEvent.detail?.type === "snippets") {
+      await initializeSnippets();
+    }
+    if (customEvent.detail?.type === "clipboard") {
+      await initializeClipboard();
+    }
+  } catch (error) {
+    console.error("Failed to refresh data:", error);
+  }
+};
+
 // 组件挂载时初始化数据
 onMounted(async () => {
   try {
@@ -706,6 +721,9 @@ onMounted(async () => {
 
     // 检查并自动启动MCP服务器
     await checkAndStartMcpServer();
+
+    // 监听数据刷新事件
+    window.addEventListener("seekcode:data-refresh", handleDataRefresh);
   } catch (error) {
     console.error("Failed to initialize app:", error);
   }
@@ -715,6 +733,8 @@ onMounted(async () => {
 onUnmounted(async () => {
   try {
     await stopClipboardMonitoring();
+    // 移除数据刷新事件监听器
+    window.removeEventListener("seekcode:data-refresh", handleDataRefresh);
   } catch (error) {
     console.error("Failed to cleanup:", error);
   }

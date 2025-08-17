@@ -461,10 +461,6 @@ const performImport = async (file: File, target: HTMLInputElement) => {
           await snippetApi.delete(snippet.id);
         }
       }
-
-      toast.success(
-        t("settings.clearedExistingSnippets", { count: existingCount })
-      );
     }
 
     // 导入新的代码片段，只使用必要的字段
@@ -481,6 +477,13 @@ const performImport = async (file: File, target: HTMLInputElement) => {
 
     // 重新加载数据统计
     await loadDataStatistics();
+
+    // 触发数据刷新事件，通知首页更新数据
+    window.dispatchEvent(
+      new CustomEvent("seekcode:data-refresh", {
+        detail: { type: "snippets" },
+      })
+    );
 
     // 显示成功通知
     if (clearExistingData.value) {
@@ -533,13 +536,10 @@ const saveClipboardSettings = async () => {
 // 清空剪贴板数据
 const clearClipboardData = async () => {
   // 使用 Tauri 的确认对话框
-  const confirmed = await confirm(
-    "确定要清空所有剪贴板数据吗？此操作不可恢复。",
-    {
-      title: "清空剪贴板数据",
-      kind: "warning",
-    }
-  );
+  const confirmed = await confirm(t("settings.confirmClearClipboardData"), {
+    title: t("settings.confirmClearClipboardDataTitle"),
+    kind: "warning",
+  });
 
   // 如果用户取消，直接返回，不执行任何操作
   if (!confirmed) {
@@ -552,6 +552,14 @@ const clearClipboardData = async () => {
     // 清空剪贴板数据
     await clipboardApi.clear();
     toast.success(t("settings.clipboardDataCleared"));
+
+    // 触发数据刷新事件，通知首页更新剪贴板数据
+    window.dispatchEvent(
+      new CustomEvent("seekcode:data-refresh", {
+        detail: { type: "clipboard" },
+      })
+    );
+
     // 重新加载数据统计
     await loadDataStatistics();
   } catch (error) {

@@ -293,6 +293,9 @@ export default {
     clearClipboardDataFailed: "Failed to clear clipboard data",
     save: "Save",
     codeSnippetDataManagement: "Code Snippet Data Management",
+    confirmClearClipboardData:
+      "Are you sure you want to clear all clipboard data? This action cannot be undone.",
+    confirmClearClipboardDataTitle: "Clear Clipboard Data",
     clipboardSettingsSaved: "Clipboard settings saved",
     saveClipboardSettingsFailed: "Failed to save clipboard settings",
     saveSettingsFailed: "Failed to save settings",

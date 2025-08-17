@@ -215,6 +215,7 @@ export default {
     updateAvailable: "发现新版本",
 
     // 数据管理
+    data: "数据管理",
     exportData: "数据导出",
     exportDataDesc: "导出你的代码片段数据用于备份和迁移。",
     exportSnippets: "导出代码片段",
@@ -256,6 +257,8 @@ export default {
     clearClipboardDataFailed: "清空剪贴板数据失败",
     save: "保存",
     codeSnippetDataManagement: "代码片段数据管理",
+    confirmClearClipboardData: "确定要清空所有剪贴板数据吗？此操作不可恢复。",
+    confirmClearClipboardDataTitle: "清空剪贴板数据",
     clipboardSettingsSaved: "剪贴板设置已保存",
     saveClipboardSettingsFailed: "保存剪贴板设置失败",
     saveSettingsFailed: "保存设置失败",
