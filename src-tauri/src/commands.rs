@@ -1,7 +1,10 @@
 use crate::mcp_server::{
     get_server_address, is_server_running, start_server_with_permissions, stop_server,
 };
+use std::fs;
+use std::path::Path;
 use tauri::Manager;
+use tauri_plugin_aptabase::EventTracker;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 // ============================================================================
@@ -378,4 +381,34 @@ pub async fn get_mcp_server_status() -> Result<serde_json::Value, String> {
         "running": is_running,
         "address": address.map(|addr| addr.to_string())
     }))
+}
+
+/// 写入文本文件
+#[tauri::command]
+pub fn write_text_file(path: String, contents: String) -> Result<(), String> {
+    // 确保父目录存在
+    if let Some(parent) = Path::new(&path).parent() {
+        fs::create_dir_all(parent).map_err(|e| format!("Failed to create directory: {}", e))?;
+    }
+
+    // 写入文件
+    fs::write(&path, contents).map_err(|e| format!("Failed to write file: {}", e))?;
+
+    Ok(())
+}
+
+// ============================================================================
+// 事件追踪
+// ============================================================================
+
+/// 通用事件追踪命令
+#[tauri::command]
+pub async fn track_event(
+    app: tauri::AppHandle,
+    event_name: String,
+    properties: Option<serde_json::Value>,
+) -> Result<(), String> {
+    // 使用 Aptabase 追踪事件
+    let _ = app.track_event(&event_name, properties);
+    Ok(())
 }

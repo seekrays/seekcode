@@ -368,9 +368,26 @@ export const clipboardApi = {
         [content, timestamp, timestamp]
       );
 
+      // 从设置中读取最大保留条数，默认为 100
+      let maxItems = 100;
+      try {
+        const settingResult = await database.select<Array<{ value: string }>>(
+          "SELECT value FROM user_settings WHERE key = 'max_clipboard_items'"
+        );
+        if (settingResult.length > 0) {
+          maxItems = parseInt(settingResult[0].value) || 100;
+        }
+      } catch (error) {
+        console.warn(
+          "Failed to read max_clipboard_items setting, using default 100:",
+          error
+        );
+      }
+
       // 限制剪贴板历史记录数量
       await database.execute(
-        "DELETE FROM clipboard_items WHERE id NOT IN (SELECT id FROM clipboard_items ORDER BY created_at DESC LIMIT 100)"
+        "DELETE FROM clipboard_items WHERE id NOT IN (SELECT id FROM clipboard_items ORDER BY created_at DESC LIMIT ?)",
+        [maxItems]
       );
 
       return {
@@ -460,6 +477,36 @@ export const clipboardApi = {
       await database.execute("DELETE FROM clipboard_items");
     } catch (error) {
       console.error("Failed to clear clipboard history:", error);
+      throw error;
+    }
+  },
+
+  // 获取剪贴板数据数量
+  async getCount(): Promise<number> {
+    try {
+      const database = await getDatabase();
+      const result = await database.select<Array<{ count: number }>>(
+        "SELECT COUNT(*) as count FROM clipboard_items"
+      );
+      return result[0]?.count || 0;
+    } catch (error) {
+      console.error("Failed to get clipboard count:", error);
+      throw error;
+    }
+  },
+
+  // 清理超出限制的剪贴板数据
+  async cleanupExcessItems(maxItems: number): Promise<void> {
+    try {
+      const database = await getDatabase();
+
+      // 删除超出限制的旧数据，保留最新的 maxItems 条记录
+      await database.execute(
+        "DELETE FROM clipboard_items WHERE id NOT IN (SELECT id FROM clipboard_items ORDER BY created_at DESC LIMIT ?)",
+        [maxItems]
+      );
+    } catch (error) {
+      console.error("Failed to cleanup excess clipboard items:", error);
       throw error;
     }
   },

@@ -103,9 +103,11 @@ export default {
 
   // Clipboard
   clipboard: {
+    title: "Clipboard",
     history: "Clipboard History",
     noHistory: "No clipboard history yet",
     copyToClipboard: "Copy to Clipboard",
+    clipboardContent: "Clipboard Content",
     saveAsSnippet: "Save as Code Snippet",
     copiedToClipboard: "Copied to clipboard",
     savedAsSnippet: "Saved as code snippet",
@@ -120,6 +122,22 @@ export default {
     selectItem: "Select a clipboard item",
     viewHistory: "View clipboard history content",
     placeholder: "Clipboard content...",
+  },
+
+  // Toast notifications
+  toast: {
+    success: "Success",
+    error: "Error",
+    warning: "Warning",
+    info: "Info",
+    copied: "Copied",
+    saved: "Saved",
+    deleted: "Deleted",
+    updated: "Updated",
+    created: "Created",
+    failed: "Failed",
+    networkError: "Network Error",
+    unknownError: "Unknown Error",
   },
 
   // Settings
@@ -177,7 +195,7 @@ export default {
     codeManagement: "Code Snippet Management",
     codeManagementDesc:
       "Support code snippet storage and management for multiple programming languages",
-    clipboardManagement: "Clipboard History",
+    clipboardManagement: "Clipboard Data Management",
     clipboardManagementDesc:
       "Automatically record and manage clipboard history",
     systemInfo: "System Information",
@@ -228,6 +246,66 @@ export default {
 
     // Help links
     mcpHelp: "MCP Usage Help",
+
+    // Data Management
+    data: "Data Management",
+    exportData: "Data Export",
+    exportDataDesc: "Export your code snippets data for backup and migration",
+    exportSnippets: "Export Code Snippets",
+    exporting: "Exporting...",
+    importData: "Data Import",
+    importDataDesc:
+      "Import code snippets data from JSON files, support migration from other devices",
+    importing: "Importing...",
+    clearExistingData: "Clear Existing Data",
+    clearExistingDataDesc:
+      "Clear all existing code snippets before import (use with caution)",
+    dataStatistics: "Data Statistics",
+    snippetsCount: "Code Snippets Count",
+    clipboardCount: "Clipboard Count",
+
+    // Clipboard Management
+    maxClipboardItems: "Max Retention Count",
+    maxClipboardItemsPlaceholder: "Enter max clipboard items to retain",
+    maxClipboardItemsDesc:
+      "Set the maximum number of clipboard history records to retain. Old records beyond this limit will be automatically deleted.",
+    clearClipboardData: "Clear Clipboard Data",
+    clearClipboardDataDesc:
+      "Delete all clipboard history records. This action cannot be undone.",
+    clearClipboard: "Clear Clipboard",
+    clickToSelectOrDrag: "Click to select file or drag file here",
+    selectJsonFile: "Select JSON File",
+    reselect: "Reselect",
+    noSnippetsToExport: "No code snippets to export",
+    exportSnippetsSuccess: "Code snippets exported successfully",
+    exportCancelled: "Export cancelled",
+    exportFailed: "Export failed",
+    importCancelled: "Import cancelled",
+    clearingExistingData: "Clearing existing data...",
+    clearedExistingSnippets: "Cleared {count} existing code snippets",
+    importingSnippets: "Importing {count} code snippets...",
+    dataReplacementComplete:
+      "Data replacement complete: Cleared original data, successfully imported {count} code snippets",
+    importSnippetsSuccess: "Successfully imported {count} code snippets",
+    importFailed: "Import failed",
+    loadDataStatisticsFailed: "Failed to load data statistics",
+    clipboardDataCleared: "Clipboard data cleared",
+    clearClipboardDataFailed: "Failed to clear clipboard data",
+    save: "Save",
+    codeSnippetDataManagement: "Code Snippet Data Management",
+    confirmClearClipboardData:
+      "Are you sure you want to clear all clipboard data? This action cannot be undone.",
+    confirmClearClipboardDataTitle: "Clear Clipboard Data",
+    clipboardSettingsSaved: "Clipboard settings saved",
+    saveClipboardSettingsFailed: "Failed to save clipboard settings",
+    saveSettingsFailed: "Failed to save settings",
+    loadClipboardSettingsFailed: "Failed to load clipboard settings",
+    confirmClearExistingData:
+      "Are you sure you want to clear all existing data?",
+    confirmClearExistingDataDesc:
+      "Currently there are {count} code snippets that will be deleted. This action cannot be undone.",
+    importFileContains: "Import file contains {count} code snippets.",
+    confirmClearExistingDataTitle: "Confirm Clear Existing Data",
 
     // Update
     checkUpdate: "Check for Updates",

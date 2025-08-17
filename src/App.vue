@@ -326,6 +326,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import { useI18n } from "vue-i18n";
 import type {
   ContextMenuState,
   TabType,
@@ -344,6 +345,9 @@ import SnippetMainContent from "./components/SnippetMainContent.vue";
 import ClipboardMainContent from "./components/ClipboardMainContent.vue";
 import SettingsModal from "./components/SettingsModal.vue";
 import UpdateDialog from "./components/UpdateDialog.vue";
+
+// 国际化
+const { t } = useI18n();
 
 // 页面状态
 const activeTab = ref<TabType>("snippets");
@@ -583,13 +587,32 @@ const saveClipboardAsSnippet = async (content: string) => {
 
     // 创建代码片段
     const snippet = await createSnippet({
-      title: `剪贴板内容 - ${new Date().toLocaleString()}`,
+      title: `${t(
+        "clipboard.clipboardContent"
+      )} - ${new Date().toLocaleString()}`,
       language: detectedLanguage,
       code: content,
       tags: [],
     });
 
     if (snippet) {
+      // 追踪从剪贴板保存为代码片段的事件
+      try {
+        const { invoke } = await import("@tauri-apps/api/core");
+        await invoke("track_event", {
+          eventName: "clipboard_saved_as_snippet",
+          properties: {
+            language: detectedLanguage,
+            content_length: content.length,
+          },
+        });
+      } catch (trackingError) {
+        console.warn(
+          "Failed to track clipboard saved as snippet event:",
+          trackingError
+        );
+      }
+
       // 切换到代码片段选项卡并选中新创建的片段
       activeTab.value = "snippets";
       selectSnippet(snippet);
@@ -669,6 +692,21 @@ watch(
   }
 );
 
+// 数据刷新事件处理器
+const handleDataRefresh = async (event: Event) => {
+  try {
+    const customEvent = event as CustomEvent;
+    if (customEvent.detail?.type === "snippets") {
+      await initializeSnippets();
+    }
+    if (customEvent.detail?.type === "clipboard") {
+      await initializeClipboard();
+    }
+  } catch (error) {
+    console.error("Failed to refresh data:", error);
+  }
+};
+
 // 组件挂载时初始化数据
 onMounted(async () => {
   try {
@@ -683,6 +721,9 @@ onMounted(async () => {
 
     // 检查并自动启动MCP服务器
     await checkAndStartMcpServer();
+
+    // 监听数据刷新事件
+    window.addEventListener("seekcode:data-refresh", handleDataRefresh);
   } catch (error) {
     console.error("Failed to initialize app:", error);
   }
@@ -692,6 +733,8 @@ onMounted(async () => {
 onUnmounted(async () => {
   try {
     await stopClipboardMonitoring();
+    // 移除数据刷新事件监听器
+    window.removeEventListener("seekcode:data-refresh", handleDataRefresh);
   } catch (error) {
     console.error("Failed to cleanup:", error);
   }

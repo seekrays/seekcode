@@ -120,8 +120,10 @@ export function useClipboard() {
     try {
       const newItem = await clipboardApi.add(content);
 
-      // 将新项添加到列表开头
-      clipboardItems.value.unshift(newItem);
+      // 重新从数据库获取最新列表，确保与数据库同步
+      // 因为添加新项时可能已经删除了超出限制的旧数据
+      const updatedItems = await clipboardApi.getHistory();
+      clipboardItems.value = updatedItems;
 
       return newItem;
     } catch (err) {
