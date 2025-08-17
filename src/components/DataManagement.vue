@@ -294,6 +294,7 @@ import { save, confirm } from "@tauri-apps/plugin-dialog";
 import { snippetApi, initDatabase, clipboardApi } from "../services/tauri";
 import { toast } from "../composables/useToast";
 import { useClipboardSettings } from "../composables/useClipboardSettings";
+import { getFormattedTimestampForFilename } from "../utils/time";
 
 const { t } = useI18n();
 
@@ -333,9 +334,7 @@ const exportSnippets = async () => {
     const jsonData = JSON.stringify(snippetsForExport, null, 2);
 
     // 使用 Tauri 的文件对话框保存文件
-    const fileName = `seekcode-snippets-${
-      new Date().toISOString().split("T")[0]
-    }.json`;
+    const fileName = `seekcode-snippets-${getFormattedTimestampForFilename()}.json`;
 
     try {
       const filePath = await save({

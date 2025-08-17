@@ -49,3 +49,21 @@ export function formatTime(dateInput: Date | string): string {
 
   return date.toLocaleDateString(locale.value);
 }
+
+/**
+ * 生成用于文件名的格式化时间戳
+ * 格式：YYYY-MM-DDTHH-MM-SS
+ * 使用本地时间，适合作为文件名
+ */
+export function getFormattedTimestampForFilename(
+  date: Date = new Date()
+): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}-${minutes}-${seconds}`;
+}
