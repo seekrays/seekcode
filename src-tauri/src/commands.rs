@@ -2,6 +2,7 @@ use crate::mcp_server::{
     get_server_address, is_server_running, start_server_with_permissions, stop_server,
 };
 use tauri::Manager;
+use tauri_plugin_aptabase::EventTracker;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 // ============================================================================
@@ -378,4 +379,20 @@ pub async fn get_mcp_server_status() -> Result<serde_json::Value, String> {
         "running": is_running,
         "address": address.map(|addr| addr.to_string())
     }))
+}
+
+// ============================================================================
+// 事件追踪
+// ============================================================================
+
+/// 通用事件追踪命令
+#[tauri::command]
+pub async fn track_event(
+    app: tauri::AppHandle,
+    event_name: String,
+    properties: Option<serde_json::Value>,
+) -> Result<(), String> {
+    // 使用 Aptabase 追踪事件
+    let _ = app.track_event(&event_name, properties);
+    Ok(())
 }

@@ -590,6 +590,23 @@ const saveClipboardAsSnippet = async (content: string) => {
     });
 
     if (snippet) {
+      // 追踪从剪贴板保存为代码片段的事件
+      try {
+        const { invoke } = await import("@tauri-apps/api/core");
+        await invoke("track_event", {
+          eventName: "clipboard_saved_as_snippet",
+          properties: {
+            language: detectedLanguage,
+            content_length: content.length,
+          },
+        });
+      } catch (trackingError) {
+        console.warn(
+          "Failed to track clipboard saved as snippet event:",
+          trackingError
+        );
+      }
+
       // 切换到代码片段选项卡并选中新创建的片段
       activeTab.value = "snippets";
       selectSnippet(snippet);

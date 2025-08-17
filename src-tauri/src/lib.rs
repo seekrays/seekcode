@@ -121,6 +121,7 @@ pub async fn run() {
             commands::start_mcp_server,
             commands::stop_mcp_server,
             commands::get_mcp_server_status,
+            commands::track_event,
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application");
