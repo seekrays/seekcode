@@ -122,6 +122,22 @@ export default {
     placeholder: "剪贴板内容...",
   },
 
+  // Toast 通知
+  toast: {
+    success: "成功",
+    error: "错误",
+    warning: "警告",
+    info: "信息",
+    copied: "已复制",
+    saved: "已保存",
+    deleted: "已删除",
+    updated: "已更新",
+    created: "已创建",
+    failed: "失败",
+    networkError: "网络错误",
+    unknownError: "未知错误",
+  },
+
   // 设置
   settings: {
     title: "设置",

@@ -124,6 +124,22 @@ export default {
     placeholder: "Clipboard content...",
   },
 
+  // Toast notifications
+  toast: {
+    success: "Success",
+    error: "Error",
+    warning: "Warning",
+    info: "Info",
+    copied: "Copied",
+    saved: "Saved",
+    deleted: "Deleted",
+    updated: "Updated",
+    created: "Created",
+    failed: "Failed",
+    networkError: "Network Error",
+    unknownError: "Unknown Error",
+  },
+
   // Settings
   settings: {
     title: "Settings",

@@ -125,6 +125,7 @@ import { useI18n } from "vue-i18n";
 import { invoke } from "@tauri-apps/api/core";
 import { save } from "@tauri-apps/plugin-dialog";
 import { snippetApi, initDatabase } from "../services/tauri";
+import { toast } from "../composables/useToast";
 
 const { t } = useI18n();
 
@@ -151,7 +152,7 @@ const exportSnippets = async () => {
 
     if (snippets.length === 0) {
       console.log("没有代码片段可导出");
-      alert("没有代码片段可导出");
+      toast.warning("没有代码片段可导出");
       return;
     }
 
@@ -182,8 +183,10 @@ const exportSnippets = async () => {
           contents: jsonData,
         });
         console.log("文件已保存到:", filePath);
+        toast.success("代码片段导出成功");
       } else {
         console.log("用户取消了文件保存");
+        toast.info("导出已取消");
       }
     } catch (error) {
       console.error("Tauri 文件保存失败，尝试浏览器下载:", error);
@@ -202,12 +205,15 @@ const exportSnippets = async () => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       console.log("使用浏览器下载完成");
+      toast.success("代码片段导出成功");
     }
 
     console.log("导出完成");
   } catch (error) {
     console.error("Failed to export snippets:", error);
-    alert("导出失败: " + error);
+    toast.error(
+      "导出失败: " + (error instanceof Error ? error.message : String(error))
+    );
   } finally {
     isExporting.value = false;
   }
@@ -256,10 +262,16 @@ const handleFileSelect = async (event: Event) => {
     // 重新加载数据统计
     await loadDataStatistics();
 
+    // 显示成功通知
+    toast.success(`成功导入 ${snippets.length} 个代码片段`);
+
     // 清空文件输入
     target.value = "";
   } catch (error) {
     console.error("Failed to import data:", error);
+    toast.error(
+      "导入失败: " + (error instanceof Error ? error.message : String(error))
+    );
   } finally {
     isImporting.value = false;
   }
@@ -281,6 +293,7 @@ const loadDataStatistics = async () => {
     console.log("代码片段数量:", snippetsCount.value);
   } catch (error) {
     console.error("Failed to load data statistics:", error);
+    toast.error("加载数据统计失败");
   }
 };
 
