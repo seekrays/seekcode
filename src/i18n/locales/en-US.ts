@@ -103,9 +103,11 @@ export default {
 
   // Clipboard
   clipboard: {
+    title: "Clipboard",
     history: "Clipboard History",
     noHistory: "No clipboard history yet",
     copyToClipboard: "Copy to Clipboard",
+    clipboardContent: "Clipboard Content",
     saveAsSnippet: "Save as Code Snippet",
     copiedToClipboard: "Copied to clipboard",
     savedAsSnippet: "Saved as code snippet",

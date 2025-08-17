@@ -326,6 +326,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import { useI18n } from "vue-i18n";
 import type {
   ContextMenuState,
   TabType,
@@ -344,6 +345,9 @@ import SnippetMainContent from "./components/SnippetMainContent.vue";
 import ClipboardMainContent from "./components/ClipboardMainContent.vue";
 import SettingsModal from "./components/SettingsModal.vue";
 import UpdateDialog from "./components/UpdateDialog.vue";
+
+// 国际化
+const { t } = useI18n();
 
 // 页面状态
 const activeTab = ref<TabType>("snippets");
@@ -583,7 +587,9 @@ const saveClipboardAsSnippet = async (content: string) => {
 
     // 创建代码片段
     const snippet = await createSnippet({
-      title: `剪贴板内容 - ${new Date().toLocaleString()}`,
+      title: `${t(
+        "clipboard.clipboardContent"
+      )} - ${new Date().toLocaleString()}`,
       language: detectedLanguage,
       code: content,
       tags: [],

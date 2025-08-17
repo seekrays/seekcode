@@ -101,9 +101,11 @@ export default {
 
   // 剪贴板
   clipboard: {
+    title: "剪贴板",
     history: "剪贴板历史",
     noHistory: "暂无剪贴板历史",
     copyToClipboard: "复制到剪贴板",
+    clipboardContent: "剪贴板内容",
     saveAsSnippet: "保存为代码片段",
     copiedToClipboard: "已复制到剪贴板",
     savedAsSnippet: "已保存为代码片段",

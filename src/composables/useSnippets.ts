@@ -185,109 +185,6 @@ export function useSnippets() {
     }
   };
 
-  // 搜索代码片段
-  const searchSnippets = async (query: string) => {
-    if (!query.trim()) {
-      await initializeSnippets();
-      return;
-    }
-
-    // 不设置loading状态，避免搜索时的loading提示
-    error.value = null;
-
-    try {
-      snippets.value = await snippetApi.search(query);
-
-      // 追踪代码片段搜索事件
-      try {
-        const { invoke } = await import("@tauri-apps/api/core");
-        await invoke("track_event", {
-          eventName: "snippet_searched",
-          properties: {
-            query_length: query.length,
-            results_count: snippets.value.length,
-          },
-        });
-      } catch (trackingError) {
-        console.warn("Failed to track snippet search event:", trackingError);
-      }
-    } catch (err) {
-      console.error("Failed to search snippets:", err);
-      error.value = err instanceof Error ? err.message : "搜索代码片段失败";
-    }
-    // 搜索操作不需要loading提示
-  };
-
-  // 根据语言过滤
-  const filterByLanguage = async (language: string) => {
-    if (!language) {
-      await initializeSnippets();
-      return;
-    }
-
-    // 不设置loading状态，避免过滤时的loading提示
-    error.value = null;
-
-    try {
-      snippets.value = await snippetApi.getByLanguage(language);
-
-      // 追踪代码片段语言过滤事件
-      try {
-        const { invoke } = await import("@tauri-apps/api/core");
-        await invoke("track_event", {
-          eventName: "snippet_filtered_by_language",
-          properties: {
-            language: language,
-            results_count: snippets.value.length,
-          },
-        });
-      } catch (trackingError) {
-        console.warn(
-          "Failed to track snippet language filter event:",
-          trackingError
-        );
-      }
-    } catch (err) {
-      console.error("Failed to filter snippets by language:", err);
-      error.value = err instanceof Error ? err.message : "按语言过滤失败";
-    }
-    // 过滤操作不需要loading提示
-  };
-
-  // 新增：根据标签过滤
-  const filterByTags = async (tags: string[]) => {
-    if (!tags.length) {
-      await initializeSnippets();
-      return;
-    }
-
-    error.value = null;
-
-    try {
-      snippets.value = await snippetApi.getByTags(tags);
-
-      // 追踪代码片段标签过滤事件
-      try {
-        const { invoke } = await import("@tauri-apps/api/core");
-        await invoke("track_event", {
-          eventName: "snippet_filtered_by_tags",
-          properties: {
-            tags_count: tags.length,
-            results_count: snippets.value.length,
-          },
-        });
-      } catch (trackingError) {
-        console.warn(
-          "Failed to track snippet tags filter event:",
-          trackingError
-        );
-      }
-    } catch (err) {
-      console.error("Failed to filter snippets by tags:", err);
-      error.value = err instanceof Error ? err.message : "按标签过滤失败";
-    }
-  };
-
   // 新增：获取所有标签
   const getAllTags = async (): Promise<string[]> => {
     try {
@@ -347,9 +244,6 @@ export function useSnippets() {
     createSnippet,
     updateSnippet,
     deleteSnippet,
-    searchSnippets,
-    filterByLanguage,
-    filterByTags,
     getAllTags,
     selectSnippet,
     getSnippetById,
