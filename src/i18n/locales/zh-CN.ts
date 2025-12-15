@@ -272,6 +272,26 @@ export default {
     updateError: "检查更新失败",
     updating: "正在更新...",
 
+    // 快捷键设置
+    shortcut: {
+      title: "快捷键管理",
+      description: "配置全局和应用内的快捷键",
+      toggleWindow: "显示/隐藏主窗口",
+      toggleWindowHint: "点击录制框并按下快捷键（如 Ctrl+Shift+K）",
+      clear: "清除快捷键",
+      pressKeys: "请按键...",
+      clickToRecord: "点击录制快捷键",
+
+      // 分组
+      globalSection: "全局快捷键",
+      globalDescription: "即使应用在后台运行，也可以通过这些快捷键触发功能",
+      appSection: "应用内快捷键",
+      appDescription: "仅当应用窗口处于激活状态时有效的快捷键",
+
+      // 功能
+      focusSearch: "聚焦搜索栏",
+    },
+
     // MCP 管理
     mcpManagement: "MCP 管理",
     listenAddress: "监听地址",

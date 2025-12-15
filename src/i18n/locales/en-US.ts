@@ -314,6 +314,28 @@ export default {
     updateNotAvailable: "Up to Date",
     updateError: "Update Check Failed",
     updating: "Updating...",
+
+    // Shortcuts settings
+    shortcut: {
+      title: "Shortcut Management",
+      description: "Configure global and app-local shortcuts",
+      toggleWindow: "Toggle Main Window",
+      toggleWindowHint: "Click to record shortcut (e.g. Ctrl+Shift+K)",
+      clear: "Clear Shortcut",
+      pressKeys: "Press keys...",
+      clickToRecord: "Click to record shortcut",
+
+      // Sections
+      globalSection: "Global Shortcuts",
+      globalDescription: "These shortcuts work even when the app is in background",
+      appSection: "App Shortcuts",
+      appDescription: "These shortcuts only work when the app is focused",
+
+      // Features
+      focusSearch: "Focus Search Bar",
+    },
+
+    // Shortcuts
   },
 
   // Shortcuts

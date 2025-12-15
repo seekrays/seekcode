@@ -3,6 +3,8 @@ import { useGeneralSettings } from "./useGeneralSettings";
 import { useAppearanceSettings } from "./useAppearanceSettings";
 import { useSettingsModal } from "./useSettingsModal";
 import { useLanguage } from "./useLanguage";
+import { useShortcutSettings } from "./useShortcutSettings";
+
 
 // 用户设置接口定义（保持兼容性）
 export interface UserSetting {
@@ -30,6 +32,7 @@ export function useUserSettings() {
   const appearanceSettings = useAppearanceSettings();
   const settingsModal = useSettingsModal();
   const language = useLanguage();
+  const shortcutSettings = useShortcutSettings();
 
   // 统一的初始化方法
   const initializeUserSettings = async (): Promise<void> => {
@@ -37,6 +40,7 @@ export function useUserSettings() {
       generalSettings.initializeGeneralSettings(),
       appearanceSettings.initializeAppearanceSettings(),
       language.initializeLanguageSettings(),
+      shortcutSettings.initializeShortcutSettings(),
     ]);
   };
 
@@ -45,7 +49,8 @@ export function useUserSettings() {
     () =>
       generalSettings.error.value ||
       appearanceSettings.error.value ||
-      language.error.value
+      language.error.value ||
+      shortcutSettings.error.value
   );
 
   // 统一的加载状态
@@ -53,7 +58,8 @@ export function useUserSettings() {
     () =>
       generalSettings.loading.value ||
       appearanceSettings.loading.value ||
-      language.loading.value
+      language.loading.value ||
+      shortcutSettings.loading.value
   );
 
   // 清除所有错误
@@ -61,6 +67,7 @@ export function useUserSettings() {
     generalSettings.clearError();
     appearanceSettings.clearError();
     language.clearError();
+    shortcutSettings.clearError();
   };
 
   return {
@@ -104,5 +111,8 @@ export function useUserSettings() {
     // 统一方法
     initializeUserSettings,
     clearError,
+
+    // 快捷键设置
+    shortcutSettings,
   };
 }

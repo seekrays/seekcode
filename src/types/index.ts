@@ -33,7 +33,7 @@ export interface AppSettings {
 
 export interface SettingsState {
   isOpen: boolean;
-  activeTab: "general" | "appearance" | "mcpServer" | "data" | "about";
+  activeTab: "general" | "appearance" | "shortcut" | "mcpServer" | "data" | "about";
 }
 
 // 用户设置相关类型
