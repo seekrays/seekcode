@@ -57,6 +57,23 @@
 
             <li>
               <button
+                @click="setActiveTab('shortcut')"
+                :class="[
+                  'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
+                  settingsState.activeTab === 'shortcut'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]"
+              >
+                <i class="fas fa-keyboard text-lg"></i>
+                <span class="font-medium whitespace-nowrap">{{
+                  $t("settings.shortcut.title")
+                }}</span>
+              </button>
+            </li>
+
+            <li>
+              <button
                 @click="setActiveTab('mcpServer')"
                 :class="[
                   'w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-2',
@@ -121,6 +138,8 @@
                 ? $t("settings.general")
                 : settingsState.activeTab === "appearance"
                 ? $t("settings.appearance")
+                : settingsState.activeTab === "shortcut"
+                ? $t("settings.shortcut.title")
                 : settingsState.activeTab === "mcpServer"
                 ? $t("settings.mcp")
                 : settingsState.activeTab === "data"
@@ -141,8 +160,10 @@
           <!-- 通用设置 -->
           <GeneralSettings v-if="settingsState.activeTab === 'general'" />
 
-          <!-- 外观设置 -->
           <ThemeSettings v-else-if="settingsState.activeTab === 'appearance'" />
+
+          <!-- 快捷键设置 -->
+          <ShortcutSettings v-else-if="settingsState.activeTab === 'shortcut'" />
 
           <!-- MCP 服务器管理 -->
           <McpServer v-else-if="settingsState.activeTab === 'mcpServer'" />
@@ -162,6 +183,7 @@
 import { useUserSettings } from "../composables/useUserSettings";
 import GeneralSettings from "./GeneralSettings.vue";
 import ThemeSettings from "./ThemeSettings.vue";
+import ShortcutSettings from "./ShortcutSettings.vue";
 import AboutPage from "./AboutPage.vue";
 import McpServer from "./McpServer.vue";
 import DataManagement from "./DataManagement.vue";

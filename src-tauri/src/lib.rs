@@ -12,6 +12,7 @@ use tauri::{
     Manager, WindowEvent,
 };
 use tauri_plugin_aptabase::EventTracker;
+use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 
 // 只在 macOS 上导入 RunEvent
 #[cfg(target_os = "macos")]
@@ -38,6 +39,8 @@ pub async fn run() {
                 })
                 .build(),
         )
+        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .plugin(tauri_plugin_os::init())
         .setup(|app| {
             // 追踪应用启动事件
             let _ = app.track_event("app_started", None);

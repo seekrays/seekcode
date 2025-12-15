@@ -2,7 +2,9 @@
   "$schema": "https://schema.tauri.app/config/2",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "core:webview:allow-create-webview-window",
@@ -22,6 +24,10 @@
     "process:allow-restart",
     "process:default",
     "dialog:default",
-    "aptabase:allow-track-event"
+    "aptabase:allow-track-event",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-unregister",
+    "global-shortcut:allow-is-registered",
+    "os:default"
   ]
 }

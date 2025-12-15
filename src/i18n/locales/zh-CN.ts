@@ -272,6 +272,17 @@ export default {
     updateError: "检查更新失败",
     updating: "正在更新...",
 
+    // 快捷键设置
+    shortcut: {
+      title: "全局快捷键",
+      description: "设置全局快捷键以快速唤起 SeekCode",
+      toggleWindow: "显示/隐藏主窗口",
+      toggleWindowHint: "点击上方方框并按下您想要设置的快捷键组合（如 Ctrl+Shift+K）",
+      clear: "清除快捷键",
+      pressKeys: "请按键...",
+      clickToRecord: "点击录制快捷键",
+    },
+
     // MCP 管理
     mcpManagement: "MCP 管理",
     listenAddress: "监听地址",

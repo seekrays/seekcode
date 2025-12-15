@@ -314,6 +314,19 @@ export default {
     updateNotAvailable: "Up to Date",
     updateError: "Update Check Failed",
     updating: "Updating...",
+
+    // Shortcuts settings
+    shortcut: {
+      title: "Global Shortcuts",
+      description: "Set global shortcuts to quickly toggle SeekCode",
+      toggleWindow: "Toggle Main Window",
+      toggleWindowHint: "Click the box above and press the key combination you want to set (e.g. Ctrl+Shift+K)",
+      clear: "Clear Shortcut",
+      pressKeys: "Press keys...",
+      clickToRecord: "Click to record shortcut",
+    },
+
+    // Shortcuts
   },
 
   // Shortcuts
