@@ -14,7 +14,16 @@
       <div class="p-4 sm:p-6 space-y-4">
         <div>
           <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-            {{ $t("settings.shortcut.toggleWindow") }}
+            <span class="inline-flex items-center gap-2">
+              <i class="fas fa-desktop text-blue-500"></i>
+              {{ $t("settings.shortcut.globalSection") }}
+            </span>
+          </label>
+          <div class="ml-1 mb-2 text-xs text-slate-500 dark:text-slate-400">
+            {{ $t("settings.shortcut.globalDescription") }}
+          </div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1 mt-3">
+             {{ $t("settings.shortcut.toggleWindow") }}
           </label>
           <ShortcutRecorder
             :model-value="globalShortcut"
@@ -24,6 +33,31 @@
           <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
             {{ $t("settings.shortcut.toggleWindowHint") }}
           </p>
+
+          <div class="border-t border-slate-200 dark:border-gray-700 my-4"></div>
+
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <span class="inline-flex items-center gap-2">
+              <i class="fas fa-window-maximize text-green-500"></i>
+              {{ $t("settings.shortcut.appSection") }}
+            </span>
+          </label>
+          <div class="ml-1 mb-2 text-xs text-slate-500 dark:text-slate-400">
+            {{ $t("settings.shortcut.appDescription") }}
+          </div>
+
+          <div class="space-y-4">
+             <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                   {{ $t("settings.shortcut.focusSearch") }}
+                </label>
+                <ShortcutRecorder
+                  :model-value="localSearchShortcut"
+                  :disabled="loading"
+                  @change="handleLocalSearchChange"
+                />
+             </div>
+          </div>
         </div>
 
         <!-- 错误提示 -->
@@ -59,9 +93,11 @@ import ShortcutRecorder from "./ShortcutRecorder.vue";
 
 const {
   globalShortcut,
+  localSearchShortcut,
   loading,
   error,
   saveShortcutSetting,
+  saveLocalShortcut,
   initializeShortcutSettings,
   clearError
 } = useShortcutSettings();
@@ -69,6 +105,11 @@ const {
 const handleShortcutChange = async (shortcut: string) => {
   clearError();
   await saveShortcutSetting(shortcut);
+};
+
+const handleLocalSearchChange = async (shortcut: string) => {
+  clearError();
+  await saveLocalShortcut("local_shortcut_search", shortcut);
 };
 
 onMounted(() => {

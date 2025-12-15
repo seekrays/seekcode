@@ -22,6 +22,7 @@
             <i class="fas fa-search w-4 h-4"></i>
           </div>
           <input
+            ref="searchInput"
             v-model="searchQuery"
             type="text"
             :placeholder="$t('search.placeholder')"
@@ -338,6 +339,7 @@ import { useClipboard } from "./composables/useClipboard";
 import { useUserSettings } from "./composables/useUserSettings";
 import { useAppUpdater } from "./composables/useAppUpdater";
 import { useSettingsDatabase } from "./composables/useSettingsDatabase";
+import { useShortcutSettings } from "./composables/useShortcutSettings"; // Add import
 
 import CodeSnippetList from "./components/CodeSnippetList.vue";
 import ClipboardHistory from "./components/ClipboardHistory.vue";
@@ -356,6 +358,8 @@ const searchQuery = ref<string>("");
 const selectedTags = ref<string[]>([]);
 const showTagsDropdown = ref<boolean>(false);
 const tagsButton = ref<HTMLElement | null>(null);
+const searchInput = ref<HTMLInputElement | null>(null);
+
 
 // 右键菜单状态
 const contextMenu = ref<ContextMenuState>({
@@ -405,6 +409,7 @@ const {
 
 const { openSettings, initializeUserSettings } = useUserSettings();
 const { getSetting } = useSettingsDatabase();
+const { matchShortcut, localSearchShortcut, initializeShortcutSettings } = useShortcutSettings(); // Use composable
 
 // 检查并自动启动MCP服务器
 const checkAndStartMcpServer = async () => {
@@ -675,6 +680,17 @@ watch(
   }
 );
 
+
+
+// 全局快捷键处理
+const handleGlobalKeydown = (event: KeyboardEvent) => {
+  // 使用配置的快捷键进行匹配
+  if (matchShortcut(event, localSearchShortcut.value)) {
+    event.preventDefault();
+    searchInput.value?.focus();
+  }
+};
+
 // 点击外部隐藏标签下拉框
 watch(
   () => showTagsDropdown.value,
@@ -722,8 +738,13 @@ onMounted(async () => {
     // 检查并自动启动MCP服务器
     await checkAndStartMcpServer();
 
+    // 初始化快捷键设置 (加载本地快捷键配置)
+    await initializeShortcutSettings();
+
     // 监听数据刷新事件
     window.addEventListener("seekcode:data-refresh", handleDataRefresh);
+    // 监听全局快捷键
+    window.addEventListener("keydown", handleGlobalKeydown);
   } catch (error) {
     console.error("Failed to initialize app:", error);
   }
@@ -735,6 +756,7 @@ onUnmounted(async () => {
     await stopClipboardMonitoring();
     // 移除数据刷新事件监听器
     window.removeEventListener("seekcode:data-refresh", handleDataRefresh);
+    window.removeEventListener("keydown", handleGlobalKeydown);
   } catch (error) {
     console.error("Failed to cleanup:", error);
   }
